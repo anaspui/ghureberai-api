@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 export enum Role {
 	ADMIN = "admin",
-	"EMPLOYEE" = "employee",
+	EMPLOYEE = "employee",
 	HOTEL_MANAGER = "hotelManager",
 	TP_MANAGER = "tpmanager",
 	CUSTOMER = "customer",

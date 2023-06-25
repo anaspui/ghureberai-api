@@ -18,7 +18,7 @@ export class RegistrationDto {
 
 	@IsEnum(Role, { message: "Invalid role value" })
 	@IsOptional()
-	Role: Role;
+	Role: Role = Role.CUSTOMER;
 
 	@IsNotEmpty()
 	@IsString()
@@ -29,7 +29,7 @@ export class RegistrationDto {
 	LastName: string;
 
 	@IsEnum(Gender)
-	Gender: Gender;
+	Gender: Gender = Gender.OTHER;
 
 	@IsNotEmpty()
 	Dob: Date;
@@ -51,5 +51,5 @@ export class RegistrationDto {
 	Picture: string;
 
 	@IsEnum(Validity)
-	Validity: Validity;
+	Validity: Validity = Validity.FALSE;
 }

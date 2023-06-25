@@ -11,7 +11,7 @@ export class RegistrationService {
 		private regRepo: Repository<User>,
 	) {}
 
-	registration(regData: RegistrationDto) {
+	registration(regData: RegistrationDto): object {
 		const registration = this.regRepo.create(regData);
 		return this.regRepo.save(registration);
 	}

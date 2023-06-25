@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-// import { DatabaseModule } from "./shared/database/database.module";
 import { RegistrationModule } from "./shared/registration/registration.module";
 
 @Module({
