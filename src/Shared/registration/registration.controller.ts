@@ -1,18 +1,20 @@
-import { Controller, Post, Body, ValidationPipe, Get } from "@nestjs/common";
-import { RegistrationDto } from "./dto/registration.dto";
+import { Controller, Post, Body, Get, UsePipes } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
+import { User } from "../entities/user.entity";
+import { RegistrationService } from "./registration.service";
 
 @Controller("registration")
 export class RegistrationController {
-	reg: RegistrationDto;
+	constructor(private regService: RegistrationService) {}
 
 	@Post()
-	registerUser(@Body(new ValidationPipe()) registrationDto: RegistrationDto) {
-		this.reg = registrationDto;
-		return "done";
+	@UsePipes(ValidationPipe)
+	registration(@Body() regData: User): any {
+		return this.regService.registration(regData);
 	}
 
 	@Get("view")
-	viewRegistration() {
-		return this.reg;
+	viewRegistration(): any {
+		return this.regService.viewRegistration();
 	}
 }

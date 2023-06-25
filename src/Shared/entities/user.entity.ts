@@ -19,7 +19,7 @@ export enum Validity {
 }
 
 @Entity()
-export class Users {
+export class User {
 	@PrimaryGeneratedColumn()
 	UserId: number;
 

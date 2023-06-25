@@ -1,10 +1,9 @@
 import {
-	IsEnum,
-	IsDate,
-	IsEmail,
 	IsNotEmpty,
-	IsOptional,
 	IsString,
+	IsEnum,
+	IsOptional,
+	IsEmail,
 } from "class-validator";
 import { Role, Gender, Validity } from "../../entities/user.entity";
 
@@ -17,9 +16,9 @@ export class RegistrationDto {
 	@IsString()
 	Password: string;
 
-	@IsEnum(Role)
+	@IsEnum(Role, { message: "Invalid role value" })
 	@IsOptional()
-	Role?: Role;
+	Role: Role;
 
 	@IsNotEmpty()
 	@IsString()
@@ -30,12 +29,12 @@ export class RegistrationDto {
 	LastName: string;
 
 	@IsEnum(Gender)
-	@IsOptional()
-	Gender?: Gender;
+	Gender: Gender;
 
-	@IsDate()
+	@IsNotEmpty()
 	Dob: Date;
 
+	@IsNotEmpty()
 	@IsEmail()
 	Email: string;
 
@@ -52,6 +51,5 @@ export class RegistrationDto {
 	Picture: string;
 
 	@IsEnum(Validity)
-	@IsOptional()
-	Validity?: Validity;
+	Validity: Validity;
 }
