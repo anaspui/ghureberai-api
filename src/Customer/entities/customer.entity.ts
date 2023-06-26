@@ -1,12 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-export enum Role {
-	ADMIN = "admin",
-	EMPLOYEE = "employee",
-	HOTEL_MANAGER = "hotelManager",
-	TP_MANAGER = "tpmanager",
-	CUSTOMER = "customer",
-}
+export enum Role { CUSTOMER = "customer" }
 
 export enum Gender {
 	MALE = "male",
@@ -19,7 +13,7 @@ export enum Validity {
 }
 
 @Entity()
-export class User {
+export class Customer {
 	@PrimaryGeneratedColumn()
 	UserId: number;
 
