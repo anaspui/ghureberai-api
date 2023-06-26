@@ -1,8 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+type UserRoleType = 'admin' | 'customer' | 'manager';
 
 @Entity()
 export class Users {
-//   @PrimaryColumn()
+  //   @PrimaryColumn()
   @PrimaryGeneratedColumn()
   UserId: number;
 
@@ -12,30 +14,34 @@ export class Users {
   @Column()
   Password: string;
 
-  @Column()
-  Role: string; 
+  @Column({
+    type: 'enum',
+    enum: ['admin', 'customer', 'manager'],
+    default: 'customer',
+  })
+  Role: UserRoleType;
 
   @Column()
-  FirstName: string; 
-  
-  @Column()
-  LastName: string; 
+  FirstName: string;
 
   @Column()
-  Gender: string; 
+  LastName: string;
 
   @Column()
-  Dob: Date; 
+  Gender: string;
 
   @Column()
-  Email: string;  
+  Dob: Date;
 
   @Column()
-  Phone: string; 
+  Email: string;
 
   @Column()
-  Address: string; 
+  Phone: string;
 
   @Column()
-  Picture: string; 
+  Address: string;
+
+  @Column()
+  Picture: string;
 }
