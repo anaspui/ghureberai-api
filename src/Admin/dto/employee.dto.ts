@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsEnum, IsIn, IsEmail } from "class-validator";
 
-import { Role, Validity } from "../../../Shared/entities/user.entity";
+import { Role, Validity } from "../../Shared/entities/user.entity";
 export class EmployeeDto {
 	@IsNotEmpty()
 	@IsString()

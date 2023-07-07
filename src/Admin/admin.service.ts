@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { EmployeeDto } from "./dto/employee.dto";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../../Shared/entities/user.entity";
-import { Role } from "../../Shared/entities/user.entity";
+import { User } from "../Shared/entities/user.entity";
+import { Role } from "../Shared/entities/user.entity";
 @Injectable()
 export class AdminService {
 	constructor(

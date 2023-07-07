@@ -2,6 +2,7 @@ import {
 	Controller,
 	Get,
 	Put,
+	Req,
 	Post,
 	ValidationPipe,
 	ParseIntPipe,
@@ -9,8 +10,12 @@ import {
 	Body,
 	Param,
 } from "@nestjs/common";
+import { Request, Response } from "express";
 import { EmployeeDto } from "./dto/employee.dto";
 import { AdminService } from "./admin.service";
+import { Role } from "src/Shared/entities/user.entity";
+import session from "express-session";
+import { CurrentSesstion } from "src/shared/auth/auth.controller";
 @Controller("admin")
 export class AdminController {
 	constructor(private adminService: AdminService) {}
@@ -20,7 +25,9 @@ export class AdminController {
 	}
 	@Post("addEmployee")
 	addEmployee(@Body() empData: EmployeeDto) {
+		empData.Role = Role.EMPLOYEE;
 		return this.adminService.addEmployee(empData);
+		// return empData;
 	}
 	@Put("updateEmployee/:id")
 	updateEmployee(
