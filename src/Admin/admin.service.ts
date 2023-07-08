@@ -11,13 +11,15 @@ export class AdminService {
 		private regRepo: Repository<User>,
 	) {}
 
-	addEmployee(empData: EmployeeDto): object {
+	addEmployee(empData: EmployeeDto): Object {
 		const addEmp = this.regRepo.create(empData);
 		return this.regRepo.save(addEmp);
 	}
+
 	async viewEmployees() {
 		return this.regRepo.find({ where: { Role: Role.EMPLOYEE } });
 	}
+
 	async updateEmployee(id: number, Username: string): Promise<string> {
 		const updateEmp = await this.regRepo.update(id, { Username });
 		if (updateEmp.affected > 0) {
@@ -26,6 +28,7 @@ export class AdminService {
 			return "Updated Failed";
 		}
 	}
+
 	async deleteEmployee(id: number): Promise<string> {
 		const result = await this.regRepo.delete(id);
 
