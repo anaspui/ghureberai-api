@@ -4,40 +4,73 @@ import {
 	Put,
 	Req,
 	Post,
-	ValidationPipe,
 	ParseIntPipe,
-	UsePipes,
 	Body,
 	Param,
 } from "@nestjs/common";
-import { Request, Response } from "express";
+import { CurrentSesstion } from "../Shared/auth/auth.controller";
+import { Request } from "express";
 import { EmployeeDto } from "./dto/employee.dto";
 import { AdminService } from "./admin.service";
-import { Role } from "src/Shared/entities/user.entity";
-import session from "express-session";
-import { CurrentSesstion } from "src/shared/auth/auth.controller";
+import { Role, Validity } from "src/Shared/entities/user.entity";
 @Controller("admin")
 export class AdminController {
 	constructor(private adminService: AdminService) {}
+
+	auth(@Req() request: Request & { session: CurrentSesstion }) {
+		if (!request.session.user) return "You are not logged in";
+		const { Role } = request.session.user;
+		if (Role === "admin") {
+			return true;
+		} else {
+			return "Access Denied! You are not an admin";
+		}
+	}
+
 	@Get("viewEmployees")
-	viewEmployees() {
-		return this.adminService.viewEmployees();
+	viewEmployees(@Req() request: Request & { session: CurrentSesstion }) {
+		if (this.auth(request) == true) {
+			return this.adminService.viewEmployees();
+		} else {
+			return this.auth(request);
+		}
 	}
 	@Post("addEmployee")
-	addEmployee(@Body() empData: EmployeeDto) {
-		empData.Role = Role.EMPLOYEE;
-		return this.adminService.addEmployee(empData);
-		// return empData;
+	addEmployee(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSesstion },
+	) {
+		if (this.auth(request) == true) {
+			empData.Role = Role.EMPLOYEE;
+			empData.Validity = Validity.TRUE;
+			return this.adminService.addEmployee(empData);
+		} else {
+			return this.auth(request);
+		}
 	}
+
 	@Put("updateEmployee/:id")
 	updateEmployee(
 		@Param("id", ParseIntPipe) id: number,
 		@Body("Username") username: string,
+		@Req() request: Request & { session: CurrentSesstion },
 	): any {
-		return this.adminService.updateEmployee(id, username);
+		if (this.auth(request) == true) {
+			return this.adminService.updateEmployee(id, username);
+		} else {
+			return this.auth(request);
+		}
 	}
+
 	@Post("deleteEmployee/:id")
-	deleteEmployee(@Param("id", ParseIntPipe) id: number): any {
-		return this.adminService.deleteEmployee(id);
+	deleteEmployee(
+		@Param("id", ParseIntPipe) id: number,
+		@Req() request: Request & { session: CurrentSesstion },
+	): any {
+		if (this.auth(request) == true) {
+			return this.adminService.deleteEmployee(id);
+		} else {
+			return this.auth(request);
+		}
 	}
 }
