@@ -26,6 +26,7 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+.prettierrc
 
 # IDE - VSCode
 .vscode/*
@@ -33,3 +34,11 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Additional
+
+.eslintrc.json
+.prettierrc
+.eslintrc.js
+package.json
+.vscode/
