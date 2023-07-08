@@ -4,7 +4,7 @@ import { Validity } from "./user.entity";
 export enum PackageType {
 	Hotel = "hotel",
 	Transport = "tranport",
-    Package = "package"
+	Package = "package",
 }
 
 @Entity()
@@ -27,11 +27,9 @@ export class Package {
 	})
 	PackageType: PackageType;
 
-    @Column({
-        type:"enum",
-        enum: Validity
-    })
-    TransportFacility : Validity.FALSE;
-
-    
+	@Column({
+		type: "enum",
+		enum: Validity,
+	})
+	TransportFacility: Validity.FALSE;
 }
