@@ -6,7 +6,7 @@ import {
 } from "class-validator";
 import { PackageType } from "../../../Shared/entities/package.entity";
 
-export class CustomerHistoryDto {
+export class HistoryDto {
 
 
 	@IsString()

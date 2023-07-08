@@ -27,7 +27,6 @@ export class AuthController {
 		@Req() request: Request & { session: CurrentSesstion },
 		@Res() response: Response,
 	) {
-		// const { Username, Password } = data;
 		const user = await this.authService.auth(loginCredentials.Username);
 
 		if (user && user.Password === loginCredentials.Password) {
@@ -38,6 +37,7 @@ export class AuthController {
 			response.sendStatus(401);
 		}
 	}
+
 	@Get("logout")
 	logout(@Req() request: Request, @Res() response: Response) {
 		request.session.destroy(err => {
@@ -47,6 +47,7 @@ export class AuthController {
 			response.sendStatus(200);
 		});
 	}
+
 	@Get("sessiondump")
 	dump(@Req() request: Request & { session: CurrentSesstion }) {
 		// console.log(request.session.isAuthenticated);

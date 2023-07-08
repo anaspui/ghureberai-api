@@ -8,7 +8,7 @@ export class PackageController{
 
     @Post('/insert')
     @UsePipes(new ValidationPipe())
-    async insertCustomerHistory(@Body() PackageDto: PackageDto) : Promise<any>
+    async insertHistory(@Body() PackageDto: PackageDto) : Promise<any>
     {
         try{
             return this.PackageService.insertPackage(PackageDto);

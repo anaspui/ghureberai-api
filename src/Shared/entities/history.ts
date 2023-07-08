@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { PackageType } from './package.entity';
 
 @Entity()
-export class CustomerHistory {
+export class History {
 	@PrimaryGeneratedColumn()
 	HistoryId: number;
 
