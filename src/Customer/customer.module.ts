@@ -6,9 +6,10 @@ import { CustomerService } from './customer.service';
 import { CustomerHistoryController } from './history/customerHistory.controller';
 import { CustomerHistoryService } from './history/customerHistory.service';
 import { PackageModule } from './package/package.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CustomerHistory]), PackageModule],
+  imports: [TypeOrmModule.forFeature([CustomerHistory]), PackageModule, WishlistModule],
   controllers: [CustomerController, CustomerHistoryController],
   providers: [CustomerService, CustomerHistoryService],
 })
