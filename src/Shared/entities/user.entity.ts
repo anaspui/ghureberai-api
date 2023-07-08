@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export enum Role {
 	ADMIN = "admin",
@@ -33,14 +33,15 @@ export class User {
 		type: "enum",
 		enum: Role,
 		default: Role.CUSTOMER,
+		nullable: true,
 	})
-	Role: Role;
+	Role?: Role | null;
 
-	@Column()
-	FirstName: string;
+	@Column({ nullable: true })
+	FirstName?: string | null;
 
-	@Column()
-	LastName: string;
+	@Column({ nullable: true })
+	LastName?: string | null;
 
 	@Column({
 		type: "enum",
@@ -49,20 +50,20 @@ export class User {
 	})
 	Gender: Gender;
 
-	@Column()
-	Dob: Date;
+	@Column({ nullable: true })
+	Dob?: Date | null;
 
 	@Column()
 	Email: string;
 
-	@Column()
-	Phone: string;
+	@Column({ nullable: true })
+	Phone?: string | null;
 
-	@Column()
-	Address: string;
+	@Column({ nullable: true })
+	Address?: string | null;
 
-	@Column()
-	Picture: string;
+	@Column({ nullable: true })
+	Picture?: string | null;
 
 	@Column({
 		type: "enum",
