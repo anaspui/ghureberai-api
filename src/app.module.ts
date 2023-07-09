@@ -4,6 +4,7 @@ import { CustomerModule } from "./Customer/customer.module";
 import { RegistrationModule } from "./shared/registration/registration.module";
 import { AdminModule } from "./admin/admin.module";
 import { AuthModule } from "./shared/auth/auth.module";
+import { PackageModule } from "./Shared/package/package.module";
 
 @Module({
 	imports: [
@@ -21,6 +22,7 @@ import { AuthModule } from "./shared/auth/auth.module";
 		AdminModule,
 		CustomerModule,
 		AuthModule,
+		PackageModule
 	],
 	controllers: [],
 	providers: [],

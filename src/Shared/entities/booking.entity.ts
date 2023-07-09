@@ -7,11 +7,8 @@ export class Booking {
 	@PrimaryGeneratedColumn({name : "booking_ID"})
 	BookingId: number;
 
-	@Column()
-    Username: string;
-    
-    @Column({ nullable: true })
-    Address?: string | null;
+	@Column({name : "hotel_name"})
+    Name: string;
     
     @OneToMany(() => User, (user) => user.UserId)
 	@JoinColumn({name : "customer_ID"})
