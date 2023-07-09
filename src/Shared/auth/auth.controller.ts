@@ -11,7 +11,7 @@ import { Request, Response } from "express";
 import { User } from "../entities/user.entity";
 import { Session } from "express-session";
 import { AuthService } from "./auth.service";
-export interface CurrentSesstion extends Session {
+export interface CurrentSession extends Session {
 	isAuthenticated: boolean;
 	user: User;
 }
@@ -24,14 +24,14 @@ export class AuthController {
 	@Post("login")
 	async login(
 		@Body() loginCredentials: any,
-		@Req() request: Request & { session: CurrentSesstion },
+		@Req() request: Request & { session: CurrentSession },
 		@Res() response: Response,
 	) {
 		const user = await this.authService.auth(loginCredentials.Username);
 
 		if (user && user.Password === loginCredentials.Password) {
-			(request.session as CurrentSesstion).isAuthenticated = true;
-			(request.session as CurrentSesstion).user = user;
+			(request.session as CurrentSession).isAuthenticated = true;
+			(request.session as CurrentSession).user = user;
 			response.sendStatus(200);
 		} else {
 			response.sendStatus(401);
@@ -49,7 +49,7 @@ export class AuthController {
 	}
 
 	@Get("sessiondump")
-	dump(@Req() request: Request & { session: CurrentSesstion }) {
+	dump(@Req() request: Request & { session: CurrentSession }) {
 		// console.log(request.session.isAuthenticated);
 		// console.log(request.session.user);
 		return request.session.user;
