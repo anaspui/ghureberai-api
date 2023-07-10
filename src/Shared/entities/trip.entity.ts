@@ -1,6 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Gender, User } from "./user.entity";
-import { Validity } from "./user.entity";
+import { User } from "./user.entity";
 import { Package } from "./package.entity";
 
 @Entity()
