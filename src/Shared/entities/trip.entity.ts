@@ -1,3 +1,5 @@
+import { Gender, User } from "./user.entity";
+import { Validity } from "./user.entity";
 import {
 	Column,
 	Entity,
@@ -6,8 +8,6 @@ import {
 	OneToOne,
 	PrimaryGeneratedColumn,
 } from "typeorm";
-import { Gender, User } from "./user.entity";
-import { Validity } from "./user.entity";
 import { Package } from "./package.entity";
 
 @Entity()

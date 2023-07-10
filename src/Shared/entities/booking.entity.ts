@@ -7,15 +7,11 @@ export class Booking {
 	@PrimaryGeneratedColumn({name : "booking_ID"})
 	BookingId: number;
 
-	@Column()
-    Username: string;
+	@Column({name : "hotel_name"})
+    Name: string;
     
-    @Column({ nullable: true })
-    Address?: string | null;
-    
-    @OneToMany(() => User, (user) => user.UserId)
-	@JoinColumn({name : "customer_ID"})
-    CustomerID: string;
+    @Column()
+    CustomerID: number;
     
     @Column()
 	CheckInDate: Date;
@@ -23,7 +19,6 @@ export class Booking {
     @Column()
     CheckOutDate: Date;
     
-	@OneToOne(() => Hotel, (hotel) => hotel.ID)
-    @JoinColumn({name : "hotel_ID"})
+	@OneToOne(() => Hotel, (hotel) => hotel.HotelId)
 	HotelId: Hotel;
 }
