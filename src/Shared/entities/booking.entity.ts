@@ -20,6 +20,5 @@ export class Booking {
     CheckOutDate: Date;
     
 	@OneToOne(() => Hotel, (hotel) => hotel.HotelId)
-    @JoinColumn({name : "hotel_ID"})
 	HotelId: Hotel;
 }

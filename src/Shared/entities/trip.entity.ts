@@ -4,25 +4,25 @@ import { Package } from "./package.entity";
 
 @Entity()
 export class Trip {
-	@PrimaryGeneratedColumn({name : "trip_ID"})
+	@PrimaryGeneratedColumn({name : "Trip_ID"})
 	ID: number;
 
     @ManyToMany(() => User, (user) => user.UserId)
-	@JoinColumn({name : "customer_ID"})
-	CustomerID: string;
+	@JoinColumn({name : "Customer_ID"})
+	CustomerID: number;
 
-	@Column({name : "trip_date"})
+	@Column({name : "Trip_date"})
     Date: Date;
     
-	@Column()
+	@Column({name : "Trip_Location"})
 	Location: string;
 
     @OneToOne(() => User, (user) => user.UserId)
     @Column({ nullable: true })
-    @JoinColumn()
-    LocalTransportID?: string | null;
+    @JoinColumn({name : "Local_Transport_ID"})
+    Local_Transport_ID?: number | null;
     
     @OneToOne(() => Package, (pac) => pac.PackageId)
-    @JoinColumn()
-	PackageID: string;
+    @JoinColumn({name : "Package_ID"})
+	PackageID: number;
 }
