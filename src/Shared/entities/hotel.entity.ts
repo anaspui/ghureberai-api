@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "t
 @Entity()
 export class Hotel {
 	@PrimaryGeneratedColumn({ name: "hotel_ID" })
-	ID: number;
+	HotelId: number;
 
 	@Column({name : "hotel_name"})
 	Name: string;

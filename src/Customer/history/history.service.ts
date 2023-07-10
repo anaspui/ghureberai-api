@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HistoryDto } from 'src/Customer/history/dto/history.dto';
-import { History } from 'src/Shared/entities/history';
+import { History } from 'src/Shared/entities/history.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

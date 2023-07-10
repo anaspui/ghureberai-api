@@ -1,16 +1,11 @@
 import {
 	IsEnum,
 	IsNotEmpty,
-	IsNumber,
-	IsString
+	IsNumber
 } from "class-validator";
 import { PackageType } from "../../../Shared/entities/package.entity";
 
 export class HistoryDto {
-
-
-	@IsString()
-	TransactionCode: string;
 
     @IsNotEmpty()
     Date: Date;

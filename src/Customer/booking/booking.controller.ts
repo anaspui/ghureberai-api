@@ -1,9 +1,11 @@
 import { Body, Controller, Get, Param , Post, Req, ParseIntPipe} from '@nestjs/common';
 import { CurrentSession } from 'src/Shared/auth/auth.controller';
 import { BookingDto } from './dto/booking.dto';
+import { BookingService } from './booking.service';
 
 @Controller('customer/booking')
 export class BookingController {
+	constructor(private bookingService: BookingService) { }
 
     // User Authentication
     auth(@Req() request: Request & { session: CurrentSession }) {
@@ -20,7 +22,7 @@ export class BookingController {
     @Get("")
 	viewBooking(@Req() request: Request & { session: CurrentSession }) {
 		if (this.auth(request) == true) {
-			return this.BookingService.showAllBookings();
+			return this.bookingService.showAllBookings();
 		} else {
 			return this.auth(request);
 		}
@@ -30,7 +32,7 @@ export class BookingController {
     @Get("/:name")
 	viewFilterBooking(@Param('name', ParseIntPipe) name: number, @Req() request: Request & { session: CurrentSession }) {
 		if (this.auth(request) == true) {
-			return this.BookingService.getBooking(name);
+			return this.bookingService.getBooking(name);
 		} else {
 			return this.auth(request);
 		}
@@ -39,11 +41,11 @@ export class BookingController {
     // Customer Booking
     @Post("insert")
 	addBooking(
-		@Body() BookingDto: BookingDto,
+		@Body() bookingDto: BookingDto,
 		@Req() request: Request & { session: CurrentSession },
 	) {
 		if (this.auth(request) == true) {
-			return this.BookingService.addBooking(BookingDto);
+			return this.bookingService.addBooking(bookingDto);
 		} else {
 			return this.auth(request);
 		}
