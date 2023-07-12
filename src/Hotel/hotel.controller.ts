@@ -10,9 +10,8 @@ import {
 } from "@nestjs/common";
 import { CurrentSession } from "../Shared/auth/auth.controller";
 import { Request } from "express";
-import { hotelDto } from './dto/hotel.dto';
+import { HotelDto } from './dto/hotel.dto';
 import { HotelService } from "../Hotel/hotel.service";
-import { Role, Validity } from "src/Shared/entities/user.entity";
 
 @Controller("hotelManager")
 export class hotelController {
@@ -39,11 +38,11 @@ export class hotelController {
 
     @Post("addhotel")
 	addhotel(
-		@Body() hotelData: hotelDto,
+		@Body() HotelDto: HotelDto,
 		@Req() request: Request & { session: CurrentSession },
 	) {
 		if (this.auth(request) == true) {
-			return this.hotelService.addHotel(hotelData);
+			//return this.hotelService.addHotel(HotelDto);
 		} else {
 			return this.auth(request);
 		}

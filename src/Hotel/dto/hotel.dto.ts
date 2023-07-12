@@ -1,9 +1,7 @@
 import {IsNotEmpty, IsString, IsEmail,IsEmpty,IsNumber,IsEnum} from "class-validator"
 
 export class HotelDto {   
-    @IsNotEmpty()
-	UserId: number;
-
+    
     @IsNotEmpty()
     @IsString()
     Name: string;
