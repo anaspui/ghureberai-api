@@ -40,5 +40,4 @@ lerna-debug.log*
 .eslintrc.json
 .prettierrc
 .eslintrc.js
-package.json
 .vscode/
