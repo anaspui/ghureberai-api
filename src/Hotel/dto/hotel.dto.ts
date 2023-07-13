@@ -13,7 +13,7 @@ export class HotelDto {
     Email: string;
 
     @IsNumber()
-    Phone: number;
+    Phone: string;
 
     @IsNotEmpty()
     Address: string;

@@ -12,9 +12,9 @@ export class HotelService {
 		private hotelRepo: Repository<Hotel>, //Hotel(Hotel.entity)
 	) {}
 
-    // async addHotel(HotelDto: HotelDto): Promise<any> {
-	// 	return this.hotelRepo.save(HotelDto);
-	//   }
+    async addHotel(HotelDto: HotelDto): Promise<any> {
+		return this.hotelRepo.save(HotelDto);
+	  }
 
 	async viewHotels() {
 		return this.hotelRepo.find();
