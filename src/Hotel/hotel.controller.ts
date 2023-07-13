@@ -14,7 +14,7 @@ import { HotelDto } from './dto/hotel.dto';
 import { HotelService } from "../Hotel/hotel.service";
 
 @Controller("hotelManager")
-export class hotelController {
+export class HotelController {
 	constructor(private hotelService: HotelService) {}
 
 	auth(@Req() request: Request & { session: CurrentSession }) {
@@ -42,7 +42,7 @@ export class hotelController {
 		@Req() request: Request & { session: CurrentSession },
 	) {
 		if (this.auth(request) == true) {
-			//return this.hotelService.addHotel(HotelDto);
+			return this.hotelService.addHotel(HotelDto);
 		} else {
 			return this.auth(request);
 		}
@@ -75,19 +75,3 @@ export class hotelController {
 
 
 }
-// import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-// import { HotelService } from './hotel.service';
-// import { hotelDto } from './dto/hotel.dto'; 
-
-// @Controller('hotel')
-// export class HotelController {
- 
-//     constructor(private transService: HotelService)
-//     {}
-
-//     @Post("addHotel") @UsePipes (new ValidationPipe())
-//     addHotel(@Body(new ValidationPipe()) hotelData: hotelDto): object{
-//         return this.transService.addHotel(hotelData);
-//     }
-
-// }

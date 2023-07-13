@@ -1,7 +1,6 @@
-import {IsNotEmpty, IsString, IsEmail,IsEmpty,IsNumber,IsEnum} from "class-validator"
+import {IsNotEmpty, IsString, IsEmail,IsNumber,IsEnum} from "class-validator"
 
-export class HotelDto {   
-    
+export class HotelDto {
     @IsNotEmpty()
     @IsString()
     Name: string;

@@ -27,7 +27,7 @@ import { HotelModule } from "./Hotel/hotel.module";
 		CustomerModule,
 		AuthModule,
 		PackageModule,
-		HotelModule,
+		HotelModule
 	],
 	controllers: [],
 	providers: [],
