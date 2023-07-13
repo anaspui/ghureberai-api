@@ -6,15 +6,12 @@ import { CustomerService } from './customer.service';
 import { HistoryController } from './history/history.controller';
 import { HistoryService } from './history/history.service';
 import { WishlistModule } from './wishlist/wishlist.module';
-import { Hotel } from 'src/Shared/entities/hotel.entity';
 import { Trip } from 'src/Shared/entities/trip.entity';
 import { Stuff } from 'src/Shared/entities/stuff.entity';
 import { BookingModule } from './booking/booking.module';
-import { Localtransport } from 'src/Shared/entities/localtransport.entity';
-import { Driver } from 'src/Shared/entities/transportDriver.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([History, Hotel, Trip, Stuff, Localtransport, Driver]), WishlistModule, BookingModule],
+  imports: [TypeOrmModule.forFeature([History, Trip]), WishlistModule, BookingModule],
   controllers: [CustomerController, HistoryController],
   providers: [CustomerService, HistoryService],
 })
