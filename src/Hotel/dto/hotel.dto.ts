@@ -11,7 +11,7 @@ export class HotelDto {
     @IsEmail()
     Email: string;
 
-    @IsNumber()
+    @IsString()
     Phone: string;
 
     @IsNotEmpty()
