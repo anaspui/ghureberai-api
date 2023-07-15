@@ -11,12 +11,32 @@ export class RegistrationService {
 		private regRepo: Repository<User>,
 	) {}
 
-	registration(regData: RegistrationDto): object {
-		const registration = this.regRepo.create(regData);
-		return this.regRepo.save(registration);
+	async isUniqueUsernameAndEmail(regData: RegistrationDto) {
+		const { Username, Email } = regData;
+
+		const existingUsername = await this.regRepo.findOne({
+			where: { Username },
+		});
+		const existingEmail = await this.regRepo.findOne({ where: { Email } });
+
+		if (existingUsername && existingEmail) {
+			return "Email and Username already exists";
+		}
+		if (existingUsername) {
+			return "Username already exists";
+		}
+		if (existingEmail) {
+			return "Email already exists";
+		}
+
+		return true;
+	}
+	async registration(regData: RegistrationDto): Promise<User> {
+		const registration: User = this.regRepo.create(regData);
+		return await this.regRepo.save(registration);
 	}
 
-	viewRegistration() {
+	async viewRegistration(): Promise<User[]> {
 		return this.regRepo.find();
 	}
 }

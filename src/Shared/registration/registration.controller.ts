@@ -2,6 +2,7 @@ import { Controller, Post, Body, Get, UsePipes } from "@nestjs/common";
 import { ValidationPipe } from "@nestjs/common";
 import { RegistrationService } from "./registration.service";
 import { RegistrationDto } from "./dto/registration.dto";
+import { Role, Validity } from "../entities/user.entity";
 
 @Controller("registration")
 export class RegistrationController {
@@ -9,8 +10,28 @@ export class RegistrationController {
 
 	@Post()
 	@UsePipes(new ValidationPipe())
-	registration(@Body(new ValidationPipe()) regData: RegistrationDto): object {
-		return this.regService.registration(regData);
+	async registration(@Body(new ValidationPipe()) regData: RegistrationDto) {
+		//Username & Email Valdiation
+		const isUnique = await this.regService.isUniqueUsernameAndEmail(regData);
+		if (isUnique && isUnique !== true) {
+			return isUnique;
+		}
+		//Role Assignment
+		const [, domain] = regData.Email.split("@");
+		if (domain === "hotel.ghureberai.com") {
+			regData.Role = Role.HOTEL_MANAGER;
+			regData.Validity = Validity.FALSE;
+		} else if (domain === "transport.ghureberai.com") {
+			regData.Role = Role.TP_MANAGER;
+			regData.Validity = Validity.FALSE;
+		} else {
+			regData.Role = Role.CUSTOMER;
+		}
+		// console.log(regData);
+		// console.log(domain);
+		if (isUnique === true) {
+			return this.regService.registration(regData);
+		}
 	}
 
 	@Get("view")

@@ -51,5 +51,5 @@ export class RegistrationDto {
 	Picture: string;
 
 	@IsEnum(Validity)
-	Validity: Validity = Validity.FALSE;
+	Validity?: Validity = Validity.FALSE;
 }
