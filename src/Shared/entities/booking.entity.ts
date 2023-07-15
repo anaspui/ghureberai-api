@@ -10,9 +10,8 @@ export class Booking {
 	@Column({name : "hotel_name"})
     Name: string;
     
-    @OneToMany(() => User, (user) => user.UserId)
-	@JoinColumn({name : "customer_ID"})
-    CustomerID: string;
+    @Column()
+    CustomerID: number;
     
     @Column()
 	CheckInDate: Date;
@@ -20,7 +19,6 @@ export class Booking {
     @Column()
     CheckOutDate: Date;
     
-	@OneToOne(() => Hotel, (hotel) => hotel.ID)
-    @JoinColumn({name : "hotel_ID"})
+	@OneToOne(() => Hotel, (hotel) => hotel.HotelId)
 	HotelId: Hotel;
 }

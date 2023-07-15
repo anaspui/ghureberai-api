@@ -9,7 +9,7 @@ export class BookingDto {
 
     @IsNotEmpty()
 	@IsString()
-	Name: string;
+	hotel_name: string;
 
 	@IsNumber()
 	CustomerID: number;
@@ -21,5 +21,5 @@ export class BookingDto {
     CheckOutDate: Date;
 
 	@IsNumber()
-	HotelId: number;
+	hotel_ID: number;
 }

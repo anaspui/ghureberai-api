@@ -4,11 +4,8 @@ import { PackageType } from './package.entity';
 
 @Entity()
 export class History {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn({name: "history_Id"})
 	HistoryId: number;
-
-	@Column()
-	TransactionCode: string;
 
 	@Column()
 	Date: Date;

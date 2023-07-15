@@ -12,8 +12,8 @@ export class BookingService {
   ) {}
 
     // Insert Booking
-    addBooking(BookingDto: BookingDto): Object {
-		return this.bookingRepo.save(BookingDto);
+    addBooking(bookingDto: BookingDto) {
+      return this.bookingRepo.save(bookingDto);
     }
     
     // Get Filtered Booking
