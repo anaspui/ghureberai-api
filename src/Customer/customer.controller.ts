@@ -1,13 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { customerSchema } from './customer.dto';
+import { Controller } from '@nestjs/common';
 
 let Customer = [];
 @Controller('customer')
 export class CustomerController {
 
-  @Get(':id')
-  //@UsePipes(new ValidationPipe())
-  viewProfile(@Param('id') id: string): customerSchema {
-    return Customer.find((customer) => customer.id == id);
-  }
 }
