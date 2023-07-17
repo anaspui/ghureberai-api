@@ -3,6 +3,8 @@ import { ValidationPipe } from "@nestjs/common";
 import { RegistrationService } from "./registration.service";
 import { RegistrationDto } from "./dto/registration.dto";
 import { Role, Validity } from "../entities/user.entity";
+import * as bcrypt from "bcryptjs";
+import { MailerModule } from "@nestjs-modules/mailer";
 
 @Controller("registration")
 export class RegistrationController {
@@ -30,6 +32,13 @@ export class RegistrationController {
 		// console.log(regData);
 		// console.log(domain);
 		if (isUnique === true) {
+			//password hashing
+			try {
+				const hashedPassword = await bcrypt.hash(regData.Password, 10);
+				regData.Password = hashedPassword;
+			} catch (error) {
+				console.log(error);
+			}
 			return this.regService.registration(regData);
 		}
 	}
