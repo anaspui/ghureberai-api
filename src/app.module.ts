@@ -8,7 +8,8 @@ import { AuthModule } from "./shared/auth/auth.module";
 import { TransportController } from "./Transport/transport.controller";
 import { PackageModule } from "./Shared/package/package.module";
 import { HotelModule } from "./Hotel/hotel.module";
-
+import { JwtService } from "@nestjs/jwt/dist";
+import { JwtModule } from "@nestjs/jwt/dist";
 @Module({
 	imports: [
 		TypeOrmModule.forRoot({
@@ -21,15 +22,18 @@ import { HotelModule } from "./Hotel/hotel.module";
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
+		JwtModule.register({
+			secret: "key",
+		}),
 		RegistrationModule,
 		TransportModule,
 		AdminModule,
 		CustomerModule,
 		AuthModule,
 		PackageModule,
-		HotelModule
+		HotelModule,
 	],
 	controllers: [],
-	providers: [],
+	providers: [JwtService],
 })
 export class AppModule {}
