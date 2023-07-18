@@ -167,4 +167,137 @@ export class AdminController {
 			return await this.auth(request);
 		}
 	}
+
+	@Get("showallpackages")
+	async showAllPackages(@Req() request: Request & { session: CurrentSession }) {
+		const isAuthEmp = await this.authEmp(request);
+		const isAuth = await this.auth(request);
+
+		if (isAuthEmp || isAuth) {
+			try {
+				const result = await this.adminService.showAllPackages();
+				return result;
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Hotel Manager not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			return await this.auth(request);
+		}
+	}
+
+	@Get("showallhotel")
+	async showAllHotel(@Req() request: Request & { session: CurrentSession }) {
+		const isAuthEmp = await this.authEmp(request);
+		const isAuth = await this.auth(request);
+
+		if (isAuthEmp || isAuth) {
+			try {
+				const result = await this.adminService.showAllHotel();
+				return result;
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Hotel Manager not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			return await this.auth(request);
+		}
+	}
+
+	@Get("showallhotelmanager")
+	async showAllHotelManager(
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		const isAuthEmp = await this.authEmp(request);
+		const isAuth = await this.auth(request);
+
+		if (isAuthEmp || isAuth) {
+			try {
+				const result = await this.adminService.showAllHotelManager();
+				return result;
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Hotel Manager not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			return await this.auth(request);
+		}
+	}
+
+	@Get("showalltpmanager")
+	async showAllTpManager(
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		const isAuthEmp = await this.authEmp(request);
+		const isAuth = await this.auth(request);
+
+		if (isAuthEmp || isAuth) {
+			try {
+				const result = await this.adminService.showAllTpManager();
+				return result;
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Hotel Manager not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			return await this.auth(request);
+		}
+	}
+	@Get("showallbookings")
+	async showAllBookings(@Req() request: Request & { session: CurrentSession }) {
+		const isAuthEmp = await this.authEmp(request);
+		const isAuth = await this.auth(request);
+
+		if (isAuthEmp || isAuth) {
+			try {
+				const result = await this.adminService.showAllBooking();
+				return result;
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Hotel Manager not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			return await this.auth(request);
+		}
+	}
 }

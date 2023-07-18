@@ -6,8 +6,14 @@ import { AdminService } from "./admin.service";
 import { AuthModule } from "src/shared/auth/auth.module";
 import { AuthService } from "src/Shared/auth/auth.service";
 import { JwtService } from "@nestjs/jwt";
+import { Package } from "src/Shared/entities/package.entity";
+import { Hotel } from "src/Shared/entities/hotel.entity";
+import { Booking } from "src/Shared/entities/booking.entity";
 @Module({
-	imports: [TypeOrmModule.forFeature([User]), AuthModule],
+	imports: [
+		TypeOrmModule.forFeature([User, Package, Hotel, Booking]),
+		AuthModule,
+	],
 	controllers: [AdminController],
 	providers: [AdminService, AuthService, JwtService],
 })

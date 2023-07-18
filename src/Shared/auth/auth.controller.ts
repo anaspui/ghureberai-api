@@ -20,14 +20,14 @@ export interface CurrentSession extends Session {
 }
 
 @Injectable()
-@Controller("auth")
+@Controller()
 export class AuthController {
 	constructor(
 		private authService: AuthService,
 		private jwtService: JwtService,
 	) {}
 
-	@Post("login")
+	@Post("auth/login")
 	async login(
 		@Body() loginCredentials: any,
 		@Req() request: Request & { session: CurrentSession },
@@ -66,12 +66,11 @@ export class AuthController {
 		}
 	}
 
-	@Post("logout")
+	@Post("auth/logout")
 	async logout(@Res({ passthrough: true }) response: Response) {
 		response.clearCookie("token");
-
 		return {
-			message: "success",
+			message: "Logged out",
 		};
 	}
 
