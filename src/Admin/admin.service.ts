@@ -2,40 +2,121 @@ import { Injectable } from "@nestjs/common";
 import { EmployeeDto } from "./dto/employee.dto";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../Shared/entities/user.entity";
+import { User, Validity } from "../Shared/entities/user.entity";
 import { Role } from "../Shared/entities/user.entity";
+import { Package, PackageType } from "./../Shared/entities/package.entity";
+import * as bcrypt from "bcryptjs";
+import { Hotel } from "src/Shared/entities/hotel.entity";
+import { Localtransport } from "src/Shared/entities/localtransport.entity";
+import { Booking } from "src/Shared/entities/booking.entity";
 @Injectable()
 export class AdminService {
 	constructor(
 		@InjectRepository(User)
-		private regRepo: Repository<User>,
+		private userRepo: Repository<User>,
+		@InjectRepository(Package)
+		private PackageRepo: Repository<Package>,
+		@InjectRepository(Hotel)
+		private HotelRepo: Repository<Hotel>,
+		@InjectRepository(Hotel)
+		private TransportManagerRepo: Repository<Localtransport>,
+		@InjectRepository(Hotel)
+		private Booking: Repository<Booking>,
 	) {}
 
-	addEmployee(empData: EmployeeDto): Object {
-		const addEmp = this.regRepo.create(empData);
-		return this.regRepo.save(addEmp);
+	async addEmployee(empData: EmployeeDto) {
+		const addEmp = this.userRepo.create(empData);
+		return await this.userRepo.save(addEmp);
 	}
 
 	async viewEmployees() {
-		return this.regRepo.find({ where: { Role: Role.EMPLOYEE } });
+		return this.userRepo.find({ where: { Role: Role.EMPLOYEE } });
 	}
 
-	async updateEmployee(id: number, Username: string): Promise<string> {
-		const updateEmp = await this.regRepo.update(id, { Username });
-		if (updateEmp.affected > 0) {
-			return "Updated Successfully";
+	async updateEmployee(
+		id: number,
+		Username: string,
+		Password: string,
+	): Promise<string> {
+		//role check
+		const userData = await this.userRepo.findOne({ where: { UserId: id } });
+		if (userData) {
+			if (userData.Role === Role.EMPLOYEE) {
+				//password hashing
+				try {
+					const hashedPassword = await bcrypt.hash(Password, 10);
+					Password = hashedPassword;
+				} catch (error) {
+					console.log(error);
+				}
+				const updateEmp = await this.userRepo.update(id, {
+					Username,
+					Password,
+				});
+				if (updateEmp.affected > 0) {
+					return "Updated Successfully";
+				} else {
+					return "Failed";
+				}
+			} else {
+				return "Please provide a valid employee Id";
+			}
 		} else {
-			return "Updated Failed";
+			throw new Error("Employee not found");
 		}
 	}
 
 	async deleteEmployee(id: number): Promise<string> {
-		const result = await this.regRepo.delete(id);
+		const userData = await this.userRepo.findOne({ where: { UserId: id } });
+		if (userData) {
+			if (userData.Role === Role.EMPLOYEE) {
+				const result = await this.userRepo.delete(id);
 
-		if (result.affected > 0) {
-			return "Employee deleted successfully";
+				if (result.affected > 0) {
+					return "Employee deleted successfully";
+				} else {
+					return "Error deleting employee";
+				}
+			} else {
+				return "Please provide a valid employee Id";
+			}
 		} else {
-			return "Error deleting employee";
+			throw new Error("Employee not found");
 		}
+	}
+
+	async approveHotelManager(id: number): Promise<boolean> {
+		const userData = await this.userRepo.findOne({ where: { UserId: id } });
+		if (userData) {
+			if (userData.Role === Role.HOTEL_MANAGER) {
+				const result = await this.userRepo.update(id, {
+					Validity: Validity.TRUE,
+				});
+				if (result.affected > 0) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			throw new Error("Hotel Manager not found");
+		}
+	}
+	async showAllPackages() {
+		return await this.PackageRepo.find();
+	}
+	async showAllHotel() {
+		return await this.HotelRepo.find();
+	}
+	async showAllHotelManager() {
+		return await this.userRepo.find({ where: { Role: Role.HOTEL_MANAGER } });
+	}
+	async showAllTpManager() {
+		return await this.TransportManagerRepo.find();
+	}
+	async showAllBooking() {
+		return await this.Booking.find();
 	}
 }
