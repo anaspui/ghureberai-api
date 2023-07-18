@@ -4,21 +4,33 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User, Validity } from "../Shared/entities/user.entity";
 import { Role } from "../Shared/entities/user.entity";
+import { Package, PackageType } from "./../Shared/entities/package.entity";
 import * as bcrypt from "bcryptjs";
+import { Hotel } from "src/Shared/entities/hotel.entity";
+import { Localtransport } from "src/Shared/entities/localtransport.entity";
+import { Booking } from "src/Shared/entities/booking.entity";
 @Injectable()
 export class AdminService {
 	constructor(
 		@InjectRepository(User)
-		private regRepo: Repository<User>,
+		private userRepo: Repository<User>,
+		@InjectRepository(Package)
+		private PackageRepo: Repository<Package>,
+		@InjectRepository(Hotel)
+		private HotelRepo: Repository<Hotel>,
+		@InjectRepository(Hotel)
+		private TransportManagerRepo: Repository<Localtransport>,
+		@InjectRepository(Hotel)
+		private Booking: Repository<Booking>,
 	) {}
 
 	async addEmployee(empData: EmployeeDto) {
-		const addEmp = this.regRepo.create(empData);
-		return await this.regRepo.save(addEmp);
+		const addEmp = this.userRepo.create(empData);
+		return await this.userRepo.save(addEmp);
 	}
 
 	async viewEmployees() {
-		return this.regRepo.find({ where: { Role: Role.EMPLOYEE } });
+		return this.userRepo.find({ where: { Role: Role.EMPLOYEE } });
 	}
 
 	async updateEmployee(
@@ -27,7 +39,7 @@ export class AdminService {
 		Password: string,
 	): Promise<string> {
 		//role check
-		const userData = await this.regRepo.findOne({ where: { UserId: id } });
+		const userData = await this.userRepo.findOne({ where: { UserId: id } });
 		if (userData) {
 			if (userData.Role === Role.EMPLOYEE) {
 				//password hashing
@@ -37,7 +49,10 @@ export class AdminService {
 				} catch (error) {
 					console.log(error);
 				}
-				const updateEmp = await this.regRepo.update(id, { Username, Password });
+				const updateEmp = await this.userRepo.update(id, {
+					Username,
+					Password,
+				});
 				if (updateEmp.affected > 0) {
 					return "Updated Successfully";
 				} else {
@@ -52,10 +67,10 @@ export class AdminService {
 	}
 
 	async deleteEmployee(id: number): Promise<string> {
-		const userData = await this.regRepo.findOne({ where: { UserId: id } });
+		const userData = await this.userRepo.findOne({ where: { UserId: id } });
 		if (userData) {
 			if (userData.Role === Role.EMPLOYEE) {
-				const result = await this.regRepo.delete(id);
+				const result = await this.userRepo.delete(id);
 
 				if (result.affected > 0) {
 					return "Employee deleted successfully";
@@ -71,10 +86,10 @@ export class AdminService {
 	}
 
 	async approveHotelManager(id: number): Promise<boolean> {
-		const userData = await this.regRepo.findOne({ where: { UserId: id } });
+		const userData = await this.userRepo.findOne({ where: { UserId: id } });
 		if (userData) {
 			if (userData.Role === Role.HOTEL_MANAGER) {
-				const result = await this.regRepo.update(id, {
+				const result = await this.userRepo.update(id, {
 					Validity: Validity.TRUE,
 				});
 				if (result.affected > 0) {
@@ -88,5 +103,20 @@ export class AdminService {
 		} else {
 			throw new Error("Hotel Manager not found");
 		}
+	}
+	async showAllPackages() {
+		return await this.PackageRepo.find();
+	}
+	async showAllHotel() {
+		return await this.HotelRepo.find();
+	}
+	async showAllHotelManager() {
+		return await this.userRepo.find({ where: { Role: Role.HOTEL_MANAGER } });
+	}
+	async showAllTpManager() {
+		return await this.TransportManagerRepo.find();
+	}
+	async showAllBooking() {
+		return await this.Booking.find();
 	}
 }

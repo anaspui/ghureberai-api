@@ -24,7 +24,7 @@ export class Driver {
 	@Column()
 	DriverSalary: string;
 
-	@ManyToOne(() => Localtransport, localTransport => localTransport.drivers, {
+	@ManyToOne(() => Localtransport, localTransport => localTransport.Drivers, {
 		onDelete: "CASCADE",
 	})
 	@JoinColumn({ name: "LocaltransportID" })
