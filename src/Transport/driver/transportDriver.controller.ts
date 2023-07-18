@@ -14,7 +14,6 @@ import {
 import { transportDriverdto } from "./transportDriver.dto";
 import { TransportDriverService } from "./transportDriver.service";
 import { CurrentSession } from "src/Shared/auth/auth.controller";
-import { get } from "http";
 
 @Controller("Transport")
 export class TransportDriverController {
@@ -26,7 +25,7 @@ export class TransportDriverController {
 		if (Role === "tpmanager") {
 			return true;
 		} else {
-			return "Access Denied! You are not an admin";
+			return "Access Denied! You are logged in as Transport Manager";
 		}
 	}
 
@@ -90,29 +89,25 @@ export class TransportDriverController {
 		}
 	}
 
-	@Get("/:id")
-	getDriver(
-		@Param("id", ParseIntPipe) id: number,
-		@Req() request: Request & { session: CurrentSession },
-	): any {
-		if (this.auth(request) === true) {
-			try {
-				return this.transService.showdriver(id);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	}
+	// @Get("/:id")
+	// getDriver(
+	// 	@Param("id", ParseIntPipe) id: number,
+	// 	@Req() request: Request & { session: CurrentSession },
+	// ): any {
+	// 	if (this.auth(request) === true) {
+	// 		try {
+	// 			return this.transService.showdriver(id);
+	// 		} catch (error) {
+	// 			console.log(error);
+	// 		}
+	// 	}
+	// }
 
-	@Get("")
+	@Get("all")
 	showAllDriver(@Req() request: Request & { session: CurrentSession }): any {
 		if (this.auth(request) === true) {
 			try {
-				try {
-					return this.transService.showAllDriver();
-				} catch (error) {
-					console.log(error);
-				}
+				return this.transService.showAllDriver();
 			} catch (error) {
 				console.log(error);
 			}
