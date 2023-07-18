@@ -13,6 +13,7 @@ import { Request } from "express";
 import { EmployeeDto } from "./dto/employee.dto";
 import { AdminService } from "./admin.service";
 import { Role, Validity } from "src/Shared/entities/user.entity";
+import * as bcrypt from "bcryptjs";
 @Controller("admin")
 export class AdminController {
 	constructor(private adminService: AdminService) {}
@@ -36,13 +37,20 @@ export class AdminController {
 		}
 	}
 	@Post("addEmployee")
-	addEmployee(
+	async addEmployee(
 		@Body() empData: EmployeeDto,
 		@Req() request: Request & { session: CurrentSession },
 	) {
 		if (this.auth(request) == true) {
 			empData.Role = Role.EMPLOYEE;
 			empData.Validity = Validity.TRUE;
+			//password hashing
+			try {
+				const hashedPassword = await bcrypt.hash(empData.Password, 10);
+				empData.Password = hashedPassword;
+			} catch (error) {
+				console.log(error);
+			}
 			return this.adminService.addEmployee(empData);
 		} else {
 			return this.auth(request);

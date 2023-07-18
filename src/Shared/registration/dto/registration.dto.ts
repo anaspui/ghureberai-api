@@ -1,11 +1,11 @@
 import {
-	IsNotEmpty,
-	IsString,
-	IsEnum,
-	IsOptional,
 	IsEmail,
+	IsEnum,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
 } from "class-validator";
-import { Role, Gender, Validity } from "../../entities/user.entity";
+import { Gender, Role, Validity } from "../../entities/user.entity";
 
 export class RegistrationDto {
 	@IsNotEmpty()
@@ -46,10 +46,9 @@ export class RegistrationDto {
 	@IsString()
 	Address: string;
 
-	@IsNotEmpty()
 	@IsString()
 	Picture: string;
 
 	@IsEnum(Validity)
-	Validity: Validity = Validity.FALSE;
+	Validity?: Validity = Validity.FALSE;
 }

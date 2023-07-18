@@ -11,6 +11,7 @@ import { Request, Response } from "express";
 import { User } from "../entities/user.entity";
 import { Session } from "express-session";
 import { AuthService } from "./auth.service";
+
 export interface CurrentSession extends Session {
 	isAuthenticated: boolean;
 	user: User;
@@ -27,12 +28,21 @@ export class AuthController {
 		@Req() request: Request & { session: CurrentSession },
 		@Res() response: Response,
 	) {
+		//get user from db
 		const user = await this.authService.auth(loginCredentials.Username);
-
-		if (user && user.Password === loginCredentials.Password) {
+		if (!user) {
+			response.sendStatus(404);
+			throw new Error("User not found");
+		}
+		//decrypt password
+		const isPasswordMatched = await this.authService.decryptPassword(
+			loginCredentials.Password,
+			user.Password,
+		);
+		if (isPasswordMatched === true) {
 			(request.session as CurrentSession).isAuthenticated = true;
 			(request.session as CurrentSession).user = user;
-			response.sendStatus(200);
+			response.status(200).json({ status: "Logged In", role: user.Role });
 		} else {
 			response.sendStatus(401);
 		}
