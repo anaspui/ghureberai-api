@@ -4,7 +4,6 @@ import { RegistrationService } from "./registration.service";
 import { RegistrationDto } from "./dto/registration.dto";
 import { Role, Validity } from "../entities/user.entity";
 import * as bcrypt from "bcryptjs";
-import { MailerModule } from "@nestjs-modules/mailer";
 
 @Controller("registration")
 export class RegistrationController {
