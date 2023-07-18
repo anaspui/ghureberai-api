@@ -13,7 +13,7 @@ export class RegistrationController {
 	@Post()
 	@UsePipes(new ValidationPipe())
 	async registration(@Body(new ValidationPipe()) regData: RegistrationDto) {
-		//Username & Email Valdiation
+		//Username & Email Validation
 		const isUnique = await this.regService.isUniqueUsernameAndEmail(regData);
 		if (isUnique && isUnique !== true) {
 			return isUnique;

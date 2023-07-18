@@ -5,6 +5,7 @@ import { Validity } from "src/Shared/entities/user.entity";
 import { CurrentSession } from "../../Shared/auth/auth.controller";
 import { PackageDto } from './dto/package.dto';
 import { PackageService } from './package.service';
+import { MailerModule } from "@nestjs-modules/mailer";
 
 @Controller('package')
 export class PackageController{
