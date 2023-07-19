@@ -33,6 +33,9 @@ export class AuthController {
 		@Req() request: Request & { session: CurrentSession },
 		@Res({ passthrough: true }) response: Response,
 	) {
+		if (loginCredentials.Username == "" || loginCredentials.Password == "") {
+			return "Please provide some valid information";
+		}
 		// get user from db
 		const user = await this.authService.auth(loginCredentials.Username);
 		if (!user) {

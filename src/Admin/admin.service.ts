@@ -111,12 +111,30 @@ export class AdminService {
 		return await this.HotelRepo.find();
 	}
 	async showAllHotelManager() {
-		return await this.userRepo.find({ where: { Role: Role.HOTEL_MANAGER } });
+		const data = await this.userRepo.find({
+			where: { Role: Role.HOTEL_MANAGER },
+		});
+		const returndata = data.map(user => {
+			const { Password, ...result } = user;
+			return result;
+		});
+		return returndata;
 	}
 	async showAllTpManager() {
-		return await this.TransportManagerRepo.find();
+		const data = await this.userRepo.find({ where: { Role: Role.TP_MANAGER } });
+		const returndata = data.map(user => {
+			const { Password, ...result } = user;
+			return result;
+		});
+		return returndata;
 	}
-	async showAllBooking() {
-		return await this.Booking.find();
+	async showAllBooking() {}
+	async allUsers() {
+		const data = await this.userRepo.find();
+		const returndata = data.map(user => {
+			const { Password, ...result } = user;
+			return result;
+		});
+		return returndata;
 	}
 }

@@ -10,6 +10,7 @@ import {
 	HttpException,
 	HttpStatus,
 	UnauthorizedException,
+	Delete,
 } from "@nestjs/common";
 import { CurrentSession } from "../Shared/auth/auth.controller";
 import { Request } from "express";
@@ -78,6 +79,27 @@ export class AdminController {
 				console.log(error);
 			}
 			return this.adminService.addEmployee(empData);
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Post("addadmin")
+	async addAdmin(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if ((await this.auth(request)) === true) {
+			//password hashing
+			try {
+				empData.Role = Role.ADMIN;
+				empData.Validity = Validity.TRUE;
+				const hashedPassword = await bcrypt.hash(empData.Password, 10);
+				empData.Password = hashedPassword;
+			} catch (error) {
+				console.log(error);
+			}
+			const result = await this.adminService.addEmployee(empData);
+			return "Admin Added";
 		} else {
 			throw new UnauthorizedException();
 		}
@@ -298,6 +320,30 @@ export class AdminController {
 			}
 		} else {
 			return await this.auth(request);
+		}
+	}
+	@Get("allusers")
+	async allusers(@Req() request: Request & { session: CurrentSession }) {
+		const isAuth = await this.auth(request);
+
+		if (isAuth) {
+			try {
+				const result = await this.adminService.allUsers();
+				return result;
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Hotel Manager not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			return "Unauthorized";
 		}
 	}
 }
