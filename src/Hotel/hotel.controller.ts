@@ -26,6 +26,7 @@ export class HotelController {
 			return "Access Denied! You are not an admin";
 		}
 	}
+	
 
 	@Get("viewHotels")
 	viewEmployees(@Req() request: Request & { session: CurrentSession }) {

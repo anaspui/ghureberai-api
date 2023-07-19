@@ -1,25 +1,30 @@
 import {
     IsDate,
+	IsEnum,
 	IsNotEmpty,
 	IsNumber,
+	IsOptional,
 	IsString
 } from "class-validator";
+import { PackageType } from "src/Shared/entities/package.entity";
 
 export class BookingDto {
 
-    @IsNotEmpty()
-	@IsString()
+	@IsOptional()
 	hotel_name: string;
 
 	@IsNumber()
 	CustomerID: number;
 
-    @IsDate()
+    @IsOptional()
     CheckInDate: Date;
 
-    @IsDate()
+    @IsOptional()
     CheckOutDate: Date;
 
 	@IsNumber()
 	hotel_ID: number;
+
+	@IsEnum(PackageType)
+	PackageType: PackageType;
 }

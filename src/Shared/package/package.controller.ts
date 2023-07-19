@@ -10,33 +10,52 @@ import {
 	Req,
 	UsePipes,
 	ValidationPipe,
+	UnauthorizedException
 } from "@nestjs/common";
 import { Request } from "express";
 import { PackageType } from "src/Shared/entities/package.entity";
-import { Validity } from "src/Shared/entities/user.entity";
+import { Role, Validity } from "src/Shared/entities/user.entity";
 import { CurrentSession } from "../../Shared/auth/auth.controller";
 import { PackageDto } from "./dto/package.dto";
 import { PackageService } from "./package.service";
+import { AuthService } from "../auth/auth.service";
 
 @Controller("package")
 export class PackageController {
-	constructor(private PackageService: PackageService) {}
+	constructor(
+		private PackageService: PackageService,
+		private authService: AuthService
+		) {}
 
+	
 	// User Authentication
-	auth(@Req() request: Request & { session: CurrentSession }) {
-		if (!request.session.user) return "You are not logged in";
-		const { Role } = request.session.user;
-		if (Role === "admin") {
+	async auth(@Req() request: Request & { session: CurrentSession }) {
+		//****************************************************************//
+		//if (!request.session.user) return "You are not logged in";
+		//const { Role } = request.session.user;
+		//if (Role === "admin") {
+		//	return "admin";
+		//} else if (Role === "customer") {
+		//	return "customer";
+		//} else if (Role === "hotelmanager") {
+		//	return "hotelmanager";
+		//} else {
+		//	return "Access Denied!";
+		//}
+		//****************************************************************//
+		const role = await this.authService.getRole(request);
+		if (!role) throw new UnauthorizedException();
+		if (role === Role.ADMIN) {
 			return "admin";
-		} else if (Role === "customer") {
+		} else if (role === Role.CUSTOMER){
 			return "customer";
-		} else if (Role === "tpmanager") {
-			return "tpmanager";
+		} else if (role === Role.HOTEL_MANAGER){
+			return "hotelmanager";
 		} else {
 			return "Access Denied!";
 		}
 	}
-
+    
 	// Admin and TP Manager Package Crud Operations
 	// Insert Package
 	@Post("insert")
@@ -45,7 +64,7 @@ export class PackageController {
 		@Body() PackageDto: PackageDto,
 		@Req() request: Request & { session: CurrentSession },
 	): Promise<any> {
-		if (this.auth(request) === "admin" || this.auth(request) === "tpmanager") {
+		if (await this.auth(request) === "admin" || await this.auth(request) === "hotelmanager") {
 			try {
 				return this.PackageService.insertPackage(PackageDto);
 			} catch (error) {
@@ -58,11 +77,11 @@ export class PackageController {
 
 	// Delete Package
 	@Delete("/delete/:id")
-	deletePackage(
+	async deletePackage(
 		@Param("id", ParseIntPipe) id: number,
 		@Req() request: Request & { session: CurrentSession },
-	): any {
-		if (this.auth(request) === "admin" || this.auth(request) === "tpmanager") {
+	): Promise<any> {
+		if  ( await this.auth(request) === "admin" || await this.auth(request) === "hotelmanager") {
 			try {
 				return this.PackageService.deletePackage(id);
 			} catch (error) {
@@ -75,22 +94,20 @@ export class PackageController {
 
 	// Update Package
 	@Put("/update/:id")
-	updatePackage(
+	async updatePackage(
 		@Param("id", ParseIntPipe)
 		id: number,
 		@Body("Name") Name: string,
-		@Body("ValidFrom") ValidFrom: Date,
 		@Body("ValidTill") ValidTill: Date,
 		@Body("PackageType") PackageType: PackageType,
 		@Body("TransportFacility") TransportFacility: Validity,
 		@Req() request: Request & { session: CurrentSession },
-	): any {
-		if (this.auth(request) === "admin" || this.auth(request) === "tpmanager") {
+	): Promise<any> {
+		if ( await this.auth(request) === "admin" || await this.auth(request) === "hotelmanager") {
 			try {
 				return this.PackageService.updatePackage(
 					id,
 					Name,
-					ValidFrom,
 					ValidTill,
 					PackageType,
 					TransportFacility,
@@ -106,14 +123,14 @@ export class PackageController {
 	// Admin, TP Manager and Customer Package View Operations
 	// Filter Packages
 	@Get("/:id")
-	getPackage(
+	async getPackage(
 		@Param("id", ParseIntPipe) id: number,
 		@Req() request: Request & { session: CurrentSession },
-	): any {
+	): Promise<any> {
 		if (
-			this.auth(request) === "admin" ||
-			this.auth(request) === "tpmanager" ||
-			this.auth(request) === "customer"
+			await this.auth(request) === "admin" ||
+			await this.auth(request) === "hotelmanager" ||
+			await this.auth(request) === "customer"
 		) {
 			try {
 				return this.PackageService.getPackage(id);
@@ -125,11 +142,11 @@ export class PackageController {
 
 	// Show All Packages
 	@Get("")
-	showAllPackage(@Req() request: Request & { session: CurrentSession }): any {
+	async showAllPackage(@Req() request: Request & { session: CurrentSession }): Promise<any> {
 		if (
-			this.auth(request) === "admin" ||
-			this.auth(request) === "tpmanager" ||
-			this.auth(request) === "customer"
+			await this.auth(request) === "admin" ||
+			await this.auth(request) === "hotelmanager" ||
+			await this.auth(request) === "customer"
 		) {
 			try {
 				try {

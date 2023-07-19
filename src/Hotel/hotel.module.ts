@@ -3,10 +3,26 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { HotelController } from './hotel.controller';
 import { HotelService } from './hotel.service';
 import { Hotel } from 'src/Shared/entities/hotel.entity';
-import { StuffModule } from './stuff/stuff.module';
+import { staffModule } from './staff/staff.module';
+import { MailerModule } from "@nestjs-modules/mailer";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Hotel]), StuffModule],
+  imports: [
+  TypeOrmModule.forFeature([Hotel]), staffModule,
+  MailerModule.forRoot({
+    transport: {
+      host: "smtp.gmail.com",
+      port: 465,
+      ignoreTLS: true,
+      secure: true,
+      auth: {
+        user: "omarmohammad.anas@gmail.com",
+        pass: "doruxfrlcixtwomr",
+      },
+    },
+  }),
+
+],
   controllers: [HotelController],
   providers: [HotelService],
 })

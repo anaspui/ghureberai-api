@@ -8,7 +8,7 @@ export class History {
 	HistoryId: number;
 
 	@Column()
-	Date: Date;
+	Date?: Date;
 
 	@Column({
 		type: "enum",
@@ -17,5 +17,5 @@ export class History {
 	PackageType: PackageType;
 
     @Column()
-    UserId: number;
+    UserId?: number;
 }
