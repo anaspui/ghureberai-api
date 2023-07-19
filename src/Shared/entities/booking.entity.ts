@@ -1,13 +1,13 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "./user.entity";
 import { Hotel } from "./hotel.entity";
+import { PackageType } from "./package.entity";
 
 @Entity()
 export class Booking {
-	@PrimaryGeneratedColumn({name : "booking_ID"})
+	@PrimaryGeneratedColumn()
 	BookingId: number;
 
-	@Column({name : "hotel_name"})
+	@Column()
     Name: string;
     
     @Column()
@@ -18,6 +18,12 @@ export class Booking {
 
     @Column()
     CheckOutDate: Date;
+
+    @Column({
+		type: "enum",
+		enum: PackageType,
+	})
+	PackageType: PackageType;
     
 	@OneToOne(() => Hotel, (hotel) => hotel.HotelId)
 	HotelId: Hotel;

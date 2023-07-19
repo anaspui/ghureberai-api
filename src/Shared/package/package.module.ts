@@ -5,6 +5,8 @@ import { PackageController } from './package.controller';
 import { PackageService } from './package.service';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { User } from '../entities/user.entity';
+import { AuthService } from '../auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -22,6 +24,6 @@ import { User } from '../entities/user.entity';
     },
   })],
   controllers: [PackageController],
-  providers: [PackageService],
+  providers: [PackageService, AuthService, JwtService],
 })
 export class PackageModule {}

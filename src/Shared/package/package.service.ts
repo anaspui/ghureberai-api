@@ -17,28 +17,33 @@ export class PackageService {
     ) {}
 
     // Insert Package
-    async insertPackage(PackageDto: PackageDto) {
-      const user: { Email: any; Username: any }[] = await this.userRepo.findBy({ Role: Role.CUSTOMER });
-      this.PackageRepo.save(PackageDto);
-    
-      user.forEach(async (userItem) => { // Use an arrow function here
-        await this.mailerService.sendMail({
-          to: userItem.Email,
-          subject: "New Package Arrivals",
-          text: `Dear ${userItem.Username},
-      
-    Thank you for being connected with Ghureberai! We're excited to notify you there are new package ${PackageDto.Name} available on our website now.
-      
-    Hurry up and start exploring our packages and experience the beauty of nature.
-      
-    If you have any questions or need assistance, feel free to reach out to our support team.
-      
-    Best regards,
-    The Ghureberai Team`,
-        });
-      });
-    
-      return "Package added successfully";
+    async insertPackage(packageDto: PackageDto) {
+		const user: { Email: any; Username: any }[] = await this.userRepo.findBy({ Role: Role.CUSTOMER });
+			var currentDateObj = new Date();
+			let numberOfMlSeconds = currentDateObj.getTime();
+			let addMlSeconds = 60 * 60 * 1000 * 24 * 7;
+			packageDto.ValidTill = new Date(numberOfMlSeconds + addMlSeconds);
+			packageDto.ValidFrom = new Date();
+			this.PackageRepo.save(packageDto);
+			
+			user.forEach(async (userItem) => { // Use an arrow function here
+				await this.mailerService.sendMail({
+				to: userItem.Email,
+				subject: "New Package Arrivals",
+				text: `Dear ${userItem.Username},
+			
+			Thank you for being connected with Ghureberai! We're excited to notify you there are new package ${packageDto.Name} available on our website now.
+			
+			Hurry up and start exploring our packages and experience the beauty of nature.
+			
+			If you have any questions or need assistance, feel free to reach out to our support team.
+			
+			Best regards,
+			The Ghureberai Team`,
+				});
+		});
+		
+		return "Package added successfully";
     }
 
 	// Get Filtered Package
@@ -59,14 +64,12 @@ export class PackageService {
 	async updatePackage(
 		id: number,
 		Name: string,
-		ValidFrom: Date,
 		ValidTill: Date,
 		PackageType: PackageType,
 		TransportFacility,
 	): Promise<string> {
 		const result = await this.PackageRepo.update(id, {
 			Name,
-			ValidFrom,
 			ValidTill,
 			PackageType,
 			TransportFacility,

@@ -3,26 +3,44 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from 'src/Shared/entities/booking.entity';
 import { Repository } from 'typeorm';
 import { BookingDto } from './dto/booking.dto';
+import { MailerService } from "@nestjs-modules/mailer/dist";
 
 @Injectable()
 export class BookingService {
    constructor(
     @InjectRepository(Booking)
-    private bookingRepo: Repository<Booking>
+    private bookingRepo: Repository<Booking>,
+    public mailerService: MailerService
   ) {}
 
     // Insert Booking
-    addBooking(bookingDto: BookingDto) {
-      return this.bookingRepo.save(bookingDto);
+    async addBooking(bookingDto: BookingDto, username:string, email:string, id:any): Promise<any> {
+      
+      bookingDto.CustomerID = id;
+      this.bookingRepo.save(bookingDto);
+      
+
+      await this.mailerService.sendMail({
+				to: email,
+				subject: "Booking confirmation",
+				text: `Dear ${username},
+			
+			Thank you for using Ghureberai!
+
+      Your booking has been confirmed. Please check your booking history for more details.
+			
+			Best regards,
+			The Ghureberai Team`,
+				});
     }
     
     // Get Filtered Booking
-    getBooking(name): any {
-      return this.bookingRepo.find({ where: { Name : name } });
+    getAllBooking(): any {
+      return this.bookingRepo.find();
     }
 
     // Get All Bookings
-    showAllBookings(): any {
-      return this.bookingRepo.find();
+    showAllBookings(id): any {
+      return this.bookingRepo.find({ where: { CustomerID : id } });
     }
 }
