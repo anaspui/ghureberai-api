@@ -20,5 +20,5 @@ export class Localtransport {
 
 	@OneToMany(() => Driver, driver => driver.localTransport)
 	@JoinColumn({ name: "DriverID" })
-	drivers: Driver[];
+	Drivers: Driver[];
 }

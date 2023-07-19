@@ -1,7 +1,7 @@
 import {IsNotEmpty, IsString, IsEmail,IsNumber,IsEnum} from "class-validator"
 import { Gender, Validity } from "src/Shared/entities/user.entity";
-import {Position, Stuff} from "src/Shared/entities/stuff.entity";
-export class StuffDto {
+import {Position, staff} from "src/Shared/entities/staff.entity";
+export class staffDto {
 
     @IsNotEmpty()
     @IsString()

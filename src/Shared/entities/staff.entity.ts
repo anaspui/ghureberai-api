@@ -4,12 +4,12 @@ import { Validity } from "./user.entity";
 
 export enum Position {
 	HOTELMANAGER = "hotelmanager",
-	STUFF = "stuff",
+	staff = "staff",
 }
 
 @Entity()
-export class Stuff {
-	@PrimaryGeneratedColumn({name : "stuff_ID"})
+export class staff {
+	@PrimaryGeneratedColumn({name : "staff_ID"})
 	ID: number;
 
 	@Column()
@@ -21,7 +21,7 @@ export class Stuff {
 	@Column({
 		type: "enum",
 		enum: Position,
-		default: Position.STUFF,
+		default: Position.staff,
 		nullable: true,
 	})
 	Position?: Position | null;
