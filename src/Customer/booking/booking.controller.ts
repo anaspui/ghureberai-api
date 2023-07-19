@@ -1,38 +1,56 @@
-import { Body, Controller, Get, Param , Post, Req, ParseIntPipe} from '@nestjs/common';
+import { Body, Controller, Get, Param , Post, Req, ParseIntPipe, UnauthorizedException} from '@nestjs/common';
 import { CurrentSession } from 'src/Shared/auth/auth.controller';
 import { BookingDto } from './dto/booking.dto';
 import { BookingService } from './booking.service';
+import { AuthService } from 'src/Shared/auth/auth.service';
+import { Role } from 'src/Shared/entities/user.entity';
+import { HistoryDto } from '../history/dto/history.dto';
 
-@Controller('customer/booking')
+@Controller('')
 export class BookingController {
-	constructor(private bookingService: BookingService) { }
+	constructor(
+		private bookingService: BookingService,
+		private authService: AuthService
+		) { }
 
     // User Authentication
-    auth(@Req() request: Request & { session: CurrentSession }) {
-		if (!request.session.user) return "You are not logged in";
-		const { Role } = request.session.user;
-		if (Role === "customer") {
+    async auth(@Req() request: Request & { session: CurrentSession }) {
+		//****************************************************************//
+		//if (!request.session.user) return "You are not logged in";
+		//const { Role } = request.session.user;
+		//if (Role === "customer") {
+		//	return true;
+		//} else {
+		//	return "Access Denied!";
+		//}
+		//****************************************************************//
+		const role = await this.authService.getRole(request);
+		if (!role) throw new UnauthorizedException();
+		if (role === Role.CUSTOMER) {
 			return true;
-		} else {
+		} else if(role === Role.ADMIN) {
+			return "admin";
+		}
+		else {
 			return "Access Denied!";
 		}
     }
     
     // Show Customer All Bookings
-    @Get("")
-	viewBooking(@Req() request: Request & { session: CurrentSession }) {
-		if (this.auth(request) == true) {
-			return this.bookingService.showAllBookings();
+    @Get("customer/booking")
+	async viewBooking(@Req() request: Request & { session: CurrentSession }) : Promise<any>{
+		if ( await this.auth(request) == true) {
+			return this.bookingService.showAllBookings(request.session.user.UserId);
 		} else {
 			return this.auth(request);
 		}
     }
 
     // Show Customer Filtered Bookings
-    @Get("/:name")
-	viewFilterBooking(@Param('name', ParseIntPipe) name: number, @Req() request: Request & { session: CurrentSession }) {
-		if (this.auth(request) == true) {
-			return this.bookingService.getBooking(name);
+    @Get("admin/allBookings")
+	async viewFilterBooking(@Req() request: Request & { session: CurrentSession }) : Promise<any> {
+		if ( await this.auth(request) === "admin") {
+			return this.bookingService.getAllBooking();
 		} else {
 			return this.auth(request);
 		}
@@ -40,12 +58,15 @@ export class BookingController {
     
     // Customer Booking
     @Post("insert")
-	addBooking(
+	async addBooking(
 		@Body() bookingDto: BookingDto,
 		@Req() request: Request & { session: CurrentSession },
-	) {
-		if (this.auth(request) == true) {
-			return this.bookingService.addBooking(bookingDto);
+	) : Promise<any> {
+		if ( await this.auth(request) == true) {
+			let user = request.session.user.Username;
+			let email = request.session.user.Email;
+			let id = request.session.user.UserId;
+			return this.bookingService.addBooking(bookingDto, user, email, id);
 		} else {
 			return this.auth(request);
 		}

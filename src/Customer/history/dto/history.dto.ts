@@ -1,18 +1,18 @@
 import {
 	IsEnum,
 	IsNotEmpty,
-	IsNumber
+	IsOptional
 } from "class-validator";
 import { PackageType } from "../../../Shared/entities/package.entity";
 
 export class HistoryDto {
 
-    @IsNotEmpty()
+    @IsOptional()
     Date: Date;
 
 	@IsEnum(PackageType)
 	PackageType: PackageType;
 
-	@IsNumber()
+	@IsOptional()
 	UserId: number;
 }

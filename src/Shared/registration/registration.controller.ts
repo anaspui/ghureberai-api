@@ -4,7 +4,6 @@ import { RegistrationService } from "./registration.service";
 import { RegistrationDto } from "./dto/registration.dto";
 import { Role, Validity } from "../entities/user.entity";
 import * as bcrypt from "bcryptjs";
-import { MailerModule } from "@nestjs-modules/mailer";
 
 @Controller("registration")
 export class RegistrationController {
@@ -13,7 +12,7 @@ export class RegistrationController {
 	@Post()
 	@UsePipes(new ValidationPipe())
 	async registration(@Body(new ValidationPipe()) regData: RegistrationDto) {
-		//Username & Email Valdiation
+		//Username & Email Validation
 		const isUnique = await this.regService.isUniqueUsernameAndEmail(regData);
 		if (isUnique && isUnique !== true) {
 			return isUnique;

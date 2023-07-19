@@ -16,10 +16,10 @@ export class Package {
 	Name: string;
 
 	@Column()
-	ValidFrom: Date;
+	ValidFrom?: Date;
 
 	@Column()
-	ValidTill: Date;
+	ValidTill?: Date;
 
 	@Column({
 		type: "enum",

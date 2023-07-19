@@ -4,13 +4,15 @@ import { Repository } from "typeorm";
 import { HotelDto } from './dto/hotel.dto'; 
 import { Hotel } from 'src/Shared/entities/Hotel.entity';
 import { PackageDto } from '../Shared/package/dto/package.dto';
-
+import { MailerService } from "@nestjs-modules/mailer/dist";
 @Injectable()
 export class HotelService {
     constructor(
         @InjectRepository(Hotel)
         private hotelRepo: Repository<Hotel>,
+        private mailerService: MailerService,
     ) {}
+    
 
     async addHotel(HotelDto: HotelDto): Promise<any> {
         return this.hotelRepo.save(HotelDto);
@@ -33,7 +35,7 @@ export class HotelService {
         const result = await this.hotelRepo.delete(HotelId);
 
         if (result.affected > 0) {
-            return "Employee deleted successfully";
+            return " deleted successfully";
         } else {
             return "Error deleting Hotel";
         }
