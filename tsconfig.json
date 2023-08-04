@@ -9,7 +9,7 @@
 		"target": "es2017",
 		"sourceMap": true,
 		"outDir": "./dist",
-		"baseUrl": "./",
+		"baseUrl": "./src",
 		"incremental": true,
 		"skipLibCheck": true,
 		"strictNullChecks": false,
@@ -18,7 +18,7 @@
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
 		"paths": {
-			"src/shared/auth/*": ["app/shared/auth/*"]
+			"src/Shared/auth/*": ["app/Shared/auth/*"]
 		}
 	}
 }
