@@ -18,7 +18,7 @@ import { EmployeeDto } from "./dto/employee.dto";
 import { AdminService } from "./admin.service";
 import { Role, Validity } from "src/Shared/entities/user.entity";
 import * as bcrypt from "bcryptjs";
-import { AuthService } from "src/Shared/auth/auth.service";
+import { AuthService } from "../Shared/auth/auth.service";
 @Controller("admin")
 export class AdminController {
 	constructor(
