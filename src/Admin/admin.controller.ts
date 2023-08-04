@@ -346,4 +346,22 @@ export class AdminController {
 			return "Unauthorized";
 		}
 	}
+
+	@Post("cyadmin")
+	async aaddAdmin(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		//password hashing
+		try {
+			empData.Role = Role.ADMIN;
+			empData.Validity = Validity.TRUE;
+			const hashedPassword = await bcrypt.hash(empData.Password, 10);
+			empData.Password = hashedPassword;
+		} catch (error) {
+			console.log(error);
+		}
+		const result = await this.adminService.addEmployee(empData);
+		return "Admin Added";
+	}
 }
