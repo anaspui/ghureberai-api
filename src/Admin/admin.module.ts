@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AdminController } from "./admin.controller";
 import { User } from "src/Shared/entities/user.entity";
 import { AdminService } from "./admin.service";
-import { AuthModule } from "src/shared/auth/auth.module";
+import { AuthModule } from "../Shared/auth/auth.module";
 import { AuthService } from "src/Shared/auth/auth.service";
 import { JwtService } from "@nestjs/jwt";
 import { Package } from "src/Shared/entities/package.entity";

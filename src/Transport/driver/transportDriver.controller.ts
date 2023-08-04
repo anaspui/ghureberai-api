@@ -13,7 +13,7 @@ import {
 } from "@nestjs/common";
 import { transportDriverdto } from "./transportDriver.dto";
 import { TransportDriverService } from "./transportDriver.service";
-import { CurrentSession } from "src/Shared/auth/auth.controller";
+import { CurrentSession } from "../../Shared/auth/auth.controller";
 
 @Controller("Transport")
 export class TransportDriverController {

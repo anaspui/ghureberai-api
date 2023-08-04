@@ -1,29 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { MailerService } from "@nestjs-modules/mailer/dist";
-import { User } from 'src/Shared/entities/user.entity';
+import { User } from "../Shared/entities/user.entity";
 
 @Injectable()
 export class CustomerService {
-    constructor(
-      @InjectRepository(User)
-      private UserRepo: Repository<User>,
-      public mailerService: MailerService,
-    ) {}
+	constructor(
+		@InjectRepository(User)
+		private UserRepo: Repository<User>,
+		public mailerService: MailerService,
+	) {}
 
-    // Get Filtered Package
-    getUser(id): any {
-      return this.UserRepo.find({ where: { UserId: id } });
-    }
-  
-    // Delete Package
-    async deleteUser(id: any) {
-        const User:User[] = await this.UserRepo.find({ where: { UserId: id } });
-        await this.mailerService.sendMail({
-            to: User[0].Email,
-            subject: "Account Deletion Notification",
-            text: `Dear ${User[0].Username},
+	// Get Filtered Package
+	getUser(id): any {
+		return this.UserRepo.find({ where: { UserId: id } });
+	}
+
+	// Delete Package
+	async deleteUser(id: any) {
+		const User: User[] = await this.UserRepo.find({ where: { UserId: id } });
+		await this.mailerService.sendMail({
+			to: User[0].Email,
+			subject: "Account Deletion Notification",
+			text: `Dear ${User[0].Username},
         
       We're sorry to notify you that your account has been deleted from our website.
         
@@ -31,7 +31,7 @@ export class CustomerService {
         
       Best regards,
       The Ghureberai Team`,
-          });
-      return this.UserRepo.delete(id);
-    }
+		});
+		return this.UserRepo.delete(id);
+	}
 }

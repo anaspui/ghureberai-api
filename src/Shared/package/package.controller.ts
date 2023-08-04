@@ -10,11 +10,11 @@ import {
 	Req,
 	UsePipes,
 	ValidationPipe,
-	UnauthorizedException
+	UnauthorizedException,
 } from "@nestjs/common";
 import { Request } from "express";
-import { PackageType } from "src/Shared/entities/package.entity";
-import { Role, Validity } from "src/Shared/entities/user.entity";
+import { PackageType } from "../../Shared/entities/package.entity";
+import { Role, Validity } from "../../Shared/entities/user.entity";
 import { CurrentSession } from "../../Shared/auth/auth.controller";
 import { PackageDto } from "./dto/package.dto";
 import { PackageService } from "./package.service";
@@ -24,10 +24,9 @@ import { AuthService } from "../auth/auth.service";
 export class PackageController {
 	constructor(
 		private PackageService: PackageService,
-		private authService: AuthService
-		) {}
+		private authService: AuthService,
+	) {}
 
-	
 	// User Authentication
 	async auth(@Req() request: Request & { session: CurrentSession }) {
 		//****************************************************************//
@@ -47,15 +46,15 @@ export class PackageController {
 		if (!role) throw new UnauthorizedException();
 		if (role === Role.ADMIN) {
 			return "admin";
-		} else if (role === Role.CUSTOMER){
+		} else if (role === Role.CUSTOMER) {
 			return "customer";
-		} else if (role === Role.HOTEL_MANAGER){
+		} else if (role === Role.HOTEL_MANAGER) {
 			return "hotelmanager";
 		} else {
 			return "Access Denied!";
 		}
 	}
-    
+
 	// Admin and TP Manager Package Crud Operations
 	// Insert Package
 	@Post("insert")
@@ -64,7 +63,10 @@ export class PackageController {
 		@Body() PackageDto: PackageDto,
 		@Req() request: Request & { session: CurrentSession },
 	): Promise<any> {
-		if (await this.auth(request) === "admin" || await this.auth(request) === "hotelmanager") {
+		if (
+			(await this.auth(request)) === "admin" ||
+			(await this.auth(request)) === "hotelmanager"
+		) {
 			try {
 				return this.PackageService.insertPackage(PackageDto);
 			} catch (error) {
@@ -81,7 +83,10 @@ export class PackageController {
 		@Param("id", ParseIntPipe) id: number,
 		@Req() request: Request & { session: CurrentSession },
 	): Promise<any> {
-		if  ( await this.auth(request) === "admin" || await this.auth(request) === "hotelmanager") {
+		if (
+			(await this.auth(request)) === "admin" ||
+			(await this.auth(request)) === "hotelmanager"
+		) {
 			try {
 				return this.PackageService.deletePackage(id);
 			} catch (error) {
@@ -103,7 +108,10 @@ export class PackageController {
 		@Body("TransportFacility") TransportFacility: Validity,
 		@Req() request: Request & { session: CurrentSession },
 	): Promise<any> {
-		if ( await this.auth(request) === "admin" || await this.auth(request) === "hotelmanager") {
+		if (
+			(await this.auth(request)) === "admin" ||
+			(await this.auth(request)) === "hotelmanager"
+		) {
 			try {
 				return this.PackageService.updatePackage(
 					id,
@@ -128,9 +136,9 @@ export class PackageController {
 		@Req() request: Request & { session: CurrentSession },
 	): Promise<any> {
 		if (
-			await this.auth(request) === "admin" ||
-			await this.auth(request) === "hotelmanager" ||
-			await this.auth(request) === "customer"
+			(await this.auth(request)) === "admin" ||
+			(await this.auth(request)) === "hotelmanager" ||
+			(await this.auth(request)) === "customer"
 		) {
 			try {
 				return this.PackageService.getPackage(id);
@@ -142,11 +150,13 @@ export class PackageController {
 
 	// Show All Packages
 	@Get("")
-	async showAllPackage(@Req() request: Request & { session: CurrentSession }): Promise<any> {
+	async showAllPackage(
+		@Req() request: Request & { session: CurrentSession },
+	): Promise<any> {
 		if (
-			await this.auth(request) === "admin" ||
-			await this.auth(request) === "hotelmanager" ||
-			await this.auth(request) === "customer"
+			(await this.auth(request)) === "admin" ||
+			(await this.auth(request)) === "hotelmanager" ||
+			(await this.auth(request)) === "customer"
 		) {
 			try {
 				try {
