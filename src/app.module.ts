@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { CustomerModule } from "./Customer/customer.module";
 import { RegistrationModule } from "./Shared/registration/registration.module";
 import { TransportModule } from "./Transport/transport.module";
-import { AdminModule } from "./admin/admin.module";
+import { AdminModule } from "./Admin/admin.module";
 import { AuthModule } from "./Shared/auth/auth.module";
 import { PackageModule } from "./Shared/package/package.module";
 import { HotelModule } from "./Hotel/hotel.module";

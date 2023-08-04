@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { HotelDto } from "./dto/hotel.dto";
-import { Hotel } from "../Shared/entities/Hotel.entity";
+import { Hotel } from "../Shared/entities/hotel.entity";
 import { PackageDto } from "../Shared/package/dto/package.dto";
 import { MailerService } from "@nestjs-modules/mailer/dist";
 @Injectable()

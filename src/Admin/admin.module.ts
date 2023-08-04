@@ -4,7 +4,7 @@ import { AdminController } from "./admin.controller";
 import { User } from "src/Shared/entities/user.entity";
 import { AdminService } from "./admin.service";
 import { AuthModule } from "../Shared/auth/auth.module";
-import { AuthService } from "src/Shared/auth/auth.service";
+import { AuthService } from "../Shared/auth/auth.service";
 import { JwtService } from "@nestjs/jwt";
 import { Package } from "src/Shared/entities/package.entity";
 import { Hotel } from "src/Shared/entities/hotel.entity";
