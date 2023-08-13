@@ -128,4 +128,8 @@ export class AuthController {
 			throw new UnauthorizedException();
 		}
 	}
+	@Get()
+	hello() {
+		return "Hello";
+	}
 }

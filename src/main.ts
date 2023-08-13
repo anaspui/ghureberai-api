@@ -4,6 +4,7 @@ import { ValidationPipe } from "@nestjs/common";
 import * as session from "express-session";
 import { sessionConfig } from "./Shared/auth/session.config";
 import * as cookieParser from "cookie-parser";
+import * as process from "process";
 const cors = require("cors");
 const express = require("express");
 
