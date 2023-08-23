@@ -11,6 +11,7 @@ import {
 	HttpStatus,
 	UnauthorizedException,
 	Delete,
+	NotFoundException,
 } from "@nestjs/common";
 import { CurrentSession } from "../Shared/auth/auth.controller";
 import { Request } from "express";
@@ -218,27 +219,20 @@ export class AdminController {
 
 	@Get("showallhotel")
 	async showAllHotel(@Req() request: Request & { session: CurrentSession }) {
-		const isAuthEmp = await this.authEmp(request);
-		const isAuth = await this.auth(request);
-
-		if (isAuthEmp || isAuth) {
-			try {
-				const result = await this.adminService.showAllHotel();
-				return result;
-			} catch (error) {
-				throw new HttpException(
-					{
-						status: HttpStatus.FORBIDDEN,
-						error: "Hotel Manager not found",
-					},
-					HttpStatus.FORBIDDEN,
-					{
-						cause: error,
-					},
-				);
-			}
-		} else {
-			return await this.auth(request);
+		try {
+			const result = await this.adminService.showAllHotel();
+			return result;
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.FORBIDDEN,
+					error: "Hotel Manager not found",
+				},
+				HttpStatus.FORBIDDEN,
+				{
+					cause: error,
+				},
+			);
 		}
 	}
 
@@ -324,27 +318,8 @@ export class AdminController {
 	}
 	@Get("allusers")
 	async allusers(@Req() request: Request & { session: CurrentSession }) {
-		const isAuth = await this.auth(request);
-
-		if (isAuth) {
-			try {
-				const result = await this.adminService.allUsers();
-				return result;
-			} catch (error) {
-				throw new HttpException(
-					{
-						status: HttpStatus.FORBIDDEN,
-						error: "Hotel Manager not found",
-					},
-					HttpStatus.FORBIDDEN,
-					{
-						cause: error,
-					},
-				);
-			}
-		} else {
-			return "Unauthorized";
-		}
+		const result = await this.adminService.allUsers();
+		return result;
 	}
 
 	@Post("cyadmin")
@@ -363,5 +338,16 @@ export class AdminController {
 		}
 		const result = await this.adminService.addEmployee(empData);
 		return "Admin Added";
+	}
+	@Delete("/delete/:id")
+	async deleteUser(@Param("id") id: number): Promise<void> {
+		try {
+			await this.adminService.deleteUser(id);
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				throw new NotFoundException(error.message);
+			}
+			throw error;
+		}
 	}
 }

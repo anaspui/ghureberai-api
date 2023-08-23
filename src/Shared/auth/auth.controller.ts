@@ -34,7 +34,7 @@ export class AuthController {
 		@Req() request: Request & { session: CurrentSession },
 		@Res({ passthrough: true }) response: Response,
 	) {
-		console.log("Login credentials:", loginCredentials);
+		console.log("Login Attempted:", loginCredentials);
 
 		if (!loginCredentials.Username || !loginCredentials.Password) {
 			return "Please provide valid credentials";
@@ -105,9 +105,8 @@ export class AuthController {
 
 	@Get("user")
 	async user(@Req() request: Request, @Res() res: Response) {
-		console.log("++++++++++++++++++++++++++++++++++++++++++++++++++");
+		console.log("Request cookies:");
 		console.log(request.cookies.token);
-		console.log("++++++++++++++++++++++++++++++++++++++++++++++++");
 		try {
 			const cookie = request.cookies.token;
 
@@ -123,13 +122,8 @@ export class AuthController {
 
 			const { Password, Validity, UserId, ...result } = user;
 			res.status(200).json(result);
-			console.log(result);
 		} catch (error) {
 			throw new UnauthorizedException();
 		}
-	}
-	@Get()
-	hello() {
-		return "Hello";
 	}
 }
