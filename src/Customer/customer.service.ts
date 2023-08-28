@@ -17,7 +17,7 @@ export class CustomerService {
       return this.UserRepo.find({ where: { UserId: id } });
     }
 
-    GetUser(username): any {
+    getUserData(username): any {
       return this.UserRepo.find({ where: { Username: username } });
     }
   
