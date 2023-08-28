@@ -16,6 +16,10 @@ export class CustomerService {
     getUser(id): any {
       return this.UserRepo.find({ where: { UserId: id } });
     }
+
+    getUserData(username): any {
+      return this.UserRepo.find({ where: { Username: username } });
+    }
   
     // Delete Package
     async deleteUser(id: any) {
