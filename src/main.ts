@@ -1,9 +1,9 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
+import { NestFactory } from "@nestjs/core";
+import * as cookieParser from "cookie-parser";
 import * as session from "express-session";
 import { sessionConfig } from "./Shared/auth/session.config";
-import * as cookieParser from "cookie-parser";
+import { AppModule } from "./app.module";
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.use(cookieParser());
@@ -13,6 +13,6 @@ async function bootstrap() {
 	});
 	app.useGlobalPipes(new ValidationPipe());
 	app.use(session(sessionConfig));
-	await app.listen(3000);
+	await app.listen(4000);
 }
 bootstrap();

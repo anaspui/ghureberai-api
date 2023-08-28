@@ -1,8 +1,8 @@
+import { MailerService } from "@nestjs-modules/mailer/dist";
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { MailerService } from "@nestjs-modules/mailer/dist";
 import { User } from 'src/Shared/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CustomerService {
@@ -15,6 +15,10 @@ export class CustomerService {
     // Get Filtered Package
     getUser(id): any {
       return this.UserRepo.find({ where: { UserId: id } });
+    }
+
+    GetUser(username): any {
+      return this.UserRepo.find({ where: { Username: username } });
     }
   
     // Delete Package

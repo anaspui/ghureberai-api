@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Req } from "@nestjs/common";
+import { Controller, Delete, Get, Param, ParseIntPipe, Req } from "@nestjs/common";
 import { Request } from "express";
 import { CurrentSession } from "../Shared/auth/auth.controller";
 import { CustomerService } from "./customer.service";
@@ -31,5 +31,12 @@ export class CustomerController{
 			return this.auth(request);
 		}
         
+    }
+    
+    @Get('/:username')
+    GetUser(@Param('username') username: string,
+    @Req() request: Request & { session: CurrentSession }): any
+    {
+        return this.CustomerService.GetUser(username);
     }
 }
