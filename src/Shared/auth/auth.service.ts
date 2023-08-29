@@ -27,8 +27,8 @@ export class AuthService {
 				throw new Error("Invalid password or hashed password");
 			}
 
-			console.log("Entered password:", password);
-			console.log("Hashed password:", hashed);
+			// console.log("Entered password:", password);
+			// console.log("Hashed password:", hashed);
 
 			const isPasswordMatch = await bcrypt.compare(password, hashed);
 			return isPasswordMatch;

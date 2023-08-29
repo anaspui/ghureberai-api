@@ -71,8 +71,6 @@ export class AdminController {
 	) {
 		if ((await this.auth(request)) == true) {
 			empData.Role = Role.EMPLOYEE;
-			empData.Validity = Validity.TRUE;
-			//password hashing
 			try {
 				const hashedPassword = await bcrypt.hash(empData.Password, 10);
 				empData.Password = hashedPassword;
@@ -80,6 +78,24 @@ export class AdminController {
 				console.log(error);
 			}
 			return this.adminService.addEmployee(empData);
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Post("addHotelManager")
+	async addHotelManager(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if ((await this.auth(request)) == true) {
+			empData.Role = Role.HOTEL_MANAGER;
+			try {
+				const hashedPassword = await bcrypt.hash(empData.Password, 10);
+				empData.Password = hashedPassword;
+			} catch (error) {
+				console.log(error);
+			}
+			return this.adminService.addHotelManager(empData);
 		} else {
 			throw new UnauthorizedException();
 		}
@@ -109,13 +125,65 @@ export class AdminController {
 	@Put("updateEmployee/:id")
 	async updateEmployee(
 		@Param("id", ParseIntPipe) id: number,
-		@Body("Username") username: string,
-		@Body("Password") password: string,
+		@Body()
+		updateData: {
+			Username: string;
+			Password: string;
+			Phone: string;
+			Email: string;
+			Validity: Validity;
+		},
 		@Req() request: Request & { session: CurrentSession },
 	) {
-		if ((await this.auth(request)) == true) {
+		if (await this.auth(request)) {
 			try {
-				return await this.adminService.updateEmployee(id, username, password);
+				return await this.adminService.updateEmployee(
+					id,
+					updateData.Username,
+					updateData.Password,
+					updateData.Email,
+					updateData.Phone,
+					updateData.Validity,
+				);
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Employee not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Put("updateHotelManager/:id")
+	async updateHotelManager(
+		@Param("id", ParseIntPipe) id: number,
+		@Body()
+		updateData: {
+			Username: string;
+			Password: string;
+			Phone: string;
+			Email: string;
+			Validity: Validity;
+		},
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if (await this.auth(request)) {
+			try {
+				return await this.adminService.updateHotelManager(
+					id,
+					updateData.Username,
+					updateData.Password,
+					updateData.Email,
+					updateData.Phone,
+					updateData.Validity,
+				);
 			} catch (error) {
 				throw new HttpException(
 					{
