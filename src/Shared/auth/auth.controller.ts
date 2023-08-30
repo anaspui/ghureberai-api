@@ -107,8 +107,10 @@ export class AuthController {
 	async user(@Req() request: Request, @Res() res: Response) {
 		console.log("Request headers:", request.headers);
 		console.log("Request cookies:", request.cookies);
+
 		try {
-			const cookie = request.cookies.token;
+			const cookie = request.cookies["_hjSessionUser_3570765"];
+			console.log("Extracted Cookie:", cookie);
 
 			const data = await this.jwtService.verifyAsync(cookie, {
 				secret: "key",
