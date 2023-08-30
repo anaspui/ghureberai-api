@@ -17,7 +17,10 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.use(cookieParser());
 	app.enableCors({
-		origin: "http://localhost:3000",
+		origin: [
+			"https://ghureberai-a8umtdtbz-anaspui.vercel.app",
+			"http://localhost:3000",
+		],
 		credentials: true,
 	});
 	app.use(session(sessionConfig));
