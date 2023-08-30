@@ -116,9 +116,9 @@ export class AuthController {
 				secret: "key",
 			});
 
-			if (!data) {
-				throw new UnauthorizedException();
-			}
+			// if (!data) {
+			// 	throw new UnauthorizedException();
+			// }
 
 			const user = await this.authService.getUser(data.id);
 
