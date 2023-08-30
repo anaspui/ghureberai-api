@@ -9,16 +9,15 @@ import * as process from "process";
 const express = require("express");
 const app = express();
 
-app.enableCors({
-	origin: [
-		"https://ghureberai-a8umtdtbz-anaspui.vercel.app",
-		"http://localhost:3000",
-	],
-	credentials: true,
-});
-
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+	app.enableCors({
+		origin: [
+			"https://ghureberai-a8umtdtbz-anaspui.vercel.app",
+			"http://localhost:3000",
+		],
+		credentials: true,
+	});
 	app.use(cookieParser());
 	app.use(session(sessionConfig));
 	await app.listen(process.env.PORT || 8000);
