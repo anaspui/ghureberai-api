@@ -11,11 +11,25 @@ const app = express();
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
+
 	app.use(
 		cors({
+			origin: function (origin, callback) {
+				// Check if the origin is allowed or not
+				const allowedOrigins = [
+					"http://localhost:3000",
+					"https://ghureberai-a8umtdtbz-anaspui.vercel.app",
+				];
+				if (!origin || allowedOrigins.includes(origin)) {
+					callback(null, true);
+				} else {
+					callback(new Error("Not allowed by CORS"));
+				}
+			},
 			credentials: true,
 		}),
 	);
+
 	app.use(cookieParser());
 	app.use(session(sessionConfig));
 	await app.listen(process.env.PORT || 8000);
