@@ -16,7 +16,10 @@ const corsOptions = {
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 	app.use(cookieParser());
-	app.use(cors(corsOptions));
+	app.enableCors({
+		origin: "http://localhost:3000",
+		credentials: true,
+	});
 	app.use(session(sessionConfig));
 	await app.listen(process.env.PORT || 8000);
 }
