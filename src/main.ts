@@ -5,6 +5,7 @@ import * as session from "express-session";
 import { sessionConfig } from "./Shared/auth/session.config";
 import * as cookieParser from "cookie-parser";
 import * as process from "process";
+import { Request, Response } from "express";
 const cors = require("cors");
 const express = require("express");
 const app = express();
@@ -12,26 +13,31 @@ const app = express();
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
-	app.use(
-		cors({
-			origin: function (origin, callback) {
-				// Check if the origin is allowed or not
-				const allowedOrigins = [
-					"http://localhost:3000",
-					"https://ghureberai-a8umtdtbz-anaspui.vercel.app",
-				];
-				if (!origin || allowedOrigins.includes(origin)) {
-					callback(null, true);
-				} else {
-					callback(new Error("Not allowed by CORS"));
-				}
-			},
-			credentials: true,
-		}),
-	);
-
 	app.use(cookieParser());
+	app.use(express.json());
+
+	app.use((req: Request, res: Response, next: Function) => {
+		const allowedOrigins = [
+			"http://localhost:3000",
+			"https://ghureberai-a8umtdtbz-anaspui.vercel.app",
+		];
+		const origin = req.headers.origin as string;
+
+		if (allowedOrigins.includes(origin)) {
+			res.header("Access-Control-Allow-Origin", origin);
+			res.header("Access-Control-Allow-Credentials", "true");
+		}
+
+		res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+		res.header(
+			"Access-Control-Allow-Headers",
+			"Origin, X-Requested-With, Content-Type, Accept",
+		);
+		next();
+	});
+
 	app.use(session(sessionConfig));
+
 	await app.listen(process.env.PORT || 8000);
 }
 
