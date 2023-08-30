@@ -105,8 +105,8 @@ export class AuthController {
 
 	@Get("user")
 	async user(@Req() request: Request, @Res() res: Response) {
-		// console.log("Request cookies:");
-		// console.log(request.cookies.token);
+		console.log("Request cookies:");
+		console.log(request.cookies.token);
 		try {
 			const cookie = request.cookies.token;
 
