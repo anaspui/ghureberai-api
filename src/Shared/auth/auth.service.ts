@@ -78,4 +78,13 @@ export class AuthService {
 			throw new UnauthorizedException();
 		}
 	}
+	async updatePassword(UserId: number, Password: string) {
+		try {
+			const hashedPassword = await bcrypt.hash(Password, 10);
+			await this.userRepo.update({ UserId }, { Password: hashedPassword });
+			return true;
+		} catch (error) {
+			throw new Error("Error updating password: " + error.message);
+		}
+	}
 }

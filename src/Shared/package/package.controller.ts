@@ -83,17 +83,14 @@ export class PackageController {
 		@Param("id", ParseIntPipe) id: number,
 		@Req() request: Request & { session: CurrentSession },
 	): Promise<any> {
-		if (
-			(await this.auth(request)) === "admin" ||
-			(await this.auth(request)) === "hotelmanager"
-		) {
-			try {
-				return this.PackageService.deletePackage(id);
-			} catch (error) {
-				console.log(error);
-			}
-		} else {
-			return this.auth(request);
+		// if (
+		// 	(await this.auth(request)) === "admin" ||
+		// 	(await this.auth(request)) === "hotelmanager"
+		// )
+		try {
+			return this.PackageService.deletePackage(id);
+		} catch (error) {
+			console.log(error);
 		}
 	}
 
