@@ -100,6 +100,37 @@ export class AuthController {
 		};
 	}
 
+	//Updated for auth
+	// @Post("auth/logout")
+	// logout(@Req() req: Request, @Res() res: Response) {
+	// 	try {
+	// 		req.session.destroy(err => {
+	// 			if (err) {
+	// 				console.error("Error destroying session:", err);
+	// 				return res.status(500).json({ message: "Logout failed" });
+	// 			}
+
+	// 			res.clearCookie("token"); // Clear the session cookie
+	// 			return res.status(200).json({ message: "Logged out" });
+	// 		});
+	// 	} catch (error) {
+	// 		console.error("Logout failed:", error);
+	// 		return res.status(500).json({ message: "Logout failed" });
+	// 	}
+	// }
+	//Updated for auth
+	@Get("auth/check-auth")
+	checkAuthentication(@Req() request: Request) {
+		try {
+			console.log(request.session);
+			const isAuthenticated =
+				(request.session as CurrentSession)?.isAuthenticated || false;
+			return { isAuthenticated };
+		} catch (error) {
+			return { isAuthenticated: false };
+		}
+	}
+
 	@Get("sessiondump")
 	dump(@Req() request: Request & { session: CurrentSession }) {
 		return request.session.user;
