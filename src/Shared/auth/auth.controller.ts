@@ -1,3 +1,4 @@
+import { User } from "./../entities/user.entity";
 import {
 	Controller,
 	Get,
@@ -11,15 +12,14 @@ import {
 	Put,
 } from "@nestjs/common";
 import { Request, Response } from "express";
-import { User } from "../entities/user.entity";
 import { Session } from "express-session";
 import { AuthService } from "./auth.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
-import { use } from "passport";
+// import { CurrentSession, sessionConfig } from "./session.config";
 export interface CurrentSession extends Session {
-	isAuthenticated: boolean;
-	user: User;
+	users?: User[];
+	user?: User;
 }
 
 @Injectable()
@@ -62,10 +62,12 @@ export class AuthController {
 			}
 
 			if (isPasswordMatched) {
-				(request.session as CurrentSession).isAuthenticated = true;
-				user.Password = undefined;
-				(request.session as CurrentSession).user = user;
-
+				if (!request.session.users) {
+					request.session.users = [];
+				}
+				if (!request.session.users.some(u => u.UserId === user.UserId)) {
+					request.session.users.push(user);
+				}
 				const token = await this.jwtService.signAsync(
 					{
 						id: user.UserId,
@@ -83,22 +85,52 @@ export class AuthController {
 			} else {
 				response.sendStatus(401);
 			}
-
-			console.log("Received loginCredentials:", loginCredentials);
 		} catch (error) {
-			// Handle other errors here, if needed
 			console.error("Error during login:", error);
 			response.status(500).json({ error: "Internal server error" });
 		}
 	}
-
 	@Post("auth/logout")
-	async logout(@Res({ passthrough: true }) response: Response) {
-		response.clearCookie("token");
-		return {
-			message: "Logged out",
-		};
+	async logout(
+		@Req() request: Request & { session: CurrentSession },
+		@Res({ passthrough: true }) response: Response,
+	) {
+		try {
+			const token = request.cookies.token;
+
+			if (!token) {
+				return response.status(400).json({ Result: "No Token on request" });
+			}
+
+			const verifiedData = await this.jwtService.verifyAsync(token, {
+				secret: "key",
+			});
+
+			if (!verifiedData) {
+				return response.status(401).json({ Result: "Invalid token" });
+			}
+			const userIndex = request.session.users.findIndex(
+				user => user.UserId === verifiedData.id,
+			);
+
+			if (userIndex !== -1) {
+				request.session.users.splice(userIndex, 1);
+			}
+
+			return response.status(200).json({ Result: "Logged Out" });
+		} catch (error) {
+			console.error("Error during logout:", error);
+			return response.status(500).json({ error: "Internal server error" });
+		}
 	}
+	//Previous log out (currently is used with nextjs)
+	// @Post("auth/logout")
+	// async logout(@Res({ passthrough: true }) response: Response) {
+	// 	response.clearCookie("token");
+	// 	return {
+	// 		message: "Logged out",
+	// 	};
+	// }
 
 	//Updated for auth
 	// @Post("auth/logout")
@@ -119,21 +151,42 @@ export class AuthController {
 	// 	}
 	// }
 	//Updated for auth
-	@Get("auth/check-auth")
-	checkAuthentication(@Req() request: Request) {
+
+	@Post("auth-check")
+	async checkAuthenticationByToken(
+		@Req() request: Request & { session: CurrentSession },
+		@Res({ passthrough: true }) response: Response,
+	) {
 		try {
-			console.log(request.session);
-			const isAuthenticated =
-				(request.session as CurrentSession)?.isAuthenticated || false;
-			return { isAuthenticated };
+			const cookie = request.cookies.token;
+			if (!request.cookies.token) {
+				return response.status(402).json({ Result: "No Token on request" });
+			}
+			const verifiedData = await this.jwtService.verifyAsync(cookie, {
+				secret: "key",
+			});
+
+			if (verifiedData) {
+				if (
+					request.session.users &&
+					request.session.users.some(user => user.UserId === verifiedData.id)
+				) {
+					return response.status(200).json({ isAuthenticated: true });
+				} else {
+					return response.status(201).json({ isAuthenticated: false });
+				}
+			} else {
+				return response.status(401).json({ isAuthenticated: false });
+			}
 		} catch (error) {
-			return { isAuthenticated: false };
+			console.error("Error during auth-check:", error);
+			return response.status(500).json({ error: "Internal server error" });
 		}
 	}
 
 	@Get("sessiondump")
 	dump(@Req() request: Request & { session: CurrentSession }) {
-		return request.session.user;
+		return request.session;
 	}
 
 	@Get("user")
