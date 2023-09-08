@@ -3,7 +3,7 @@ import { Validity } from "./user.entity";
 
 export enum PackageType {
 	Hotel = "hotel",
-	Transport = "tranport",
+	Transport = "transport",
 	Package = "package",
 }
 
@@ -31,5 +31,5 @@ export class Package {
 		type: "enum",
 		enum: Validity,
 	})
-	TransportFacility: Validity.FALSE;
+	Transport: Validity.FALSE;
 }
