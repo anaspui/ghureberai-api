@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Localtransport } from "src/Shared/entities/localtransport.entity";
+import { Localtransport } from "../../Shared/entities/localtransport.entity";
 import { Repository } from "typeorm";
 import { LTDto } from "./transportLT.dto";
 

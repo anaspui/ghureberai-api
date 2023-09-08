@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common";
 import { CurrentSession } from "../Shared/auth/auth.controller";
 import { Request } from "express";
-import { HotelDto } from './dto/hotel.dto';
+import { HotelDto } from "./dto/hotel.dto";
 import { HotelService } from "../Hotel/hotel.service";
 
 @Controller("hotelManager")
@@ -28,7 +28,7 @@ export class HotelController {
 	}
 	
 
-    @Get("viewHotels")
+	@Get("viewHotels")
 	viewEmployees(@Req() request: Request & { session: CurrentSession }) {
 		if (this.auth(request) == true) {
 			return this.hotelService.viewHotels();
@@ -37,7 +37,7 @@ export class HotelController {
 		}
 	}
 
-    @Post("addhotel")
+	@Post("addhotel")
 	addhotel(
 		@Body() HotelDto: HotelDto,
 		@Req() request: Request & { session: CurrentSession },
@@ -49,7 +49,7 @@ export class HotelController {
 		}
 	}
 
-    @Put("updateHotel/:HotelId")
+	@Put("updateHotel/:HotelId")
 	updateHotel(
 		@Param("HotelId", ParseIntPipe) HotelId: number,
 		@Body("Name") Name: string,
@@ -62,7 +62,7 @@ export class HotelController {
 		}
 	}
 
-    @Post("deleteHotel/:HotelId")
+	@Post("deleteHotel/:HotelId")
 	deleteHotel(
 		@Param("HotelId", ParseIntPipe) HotelId: number,
 		@Req() request: Request & { session: CurrentSession },
@@ -73,6 +73,4 @@ export class HotelController {
 			return this.auth(request);
 		}
 	}
-
-
 }

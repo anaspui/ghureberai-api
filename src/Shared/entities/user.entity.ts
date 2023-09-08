@@ -46,9 +46,9 @@ export class User {
 	@Column({
 		type: "enum",
 		enum: Gender,
-		default: Gender.OTHER,
+		nullable: true,
 	})
-	Gender: Gender;
+	Gender?: Gender | null;
 
 	@Column({ nullable: true })
 	Dob?: Date | null;
@@ -56,7 +56,7 @@ export class User {
 	@Column()
 	Email: string;
 
-	@Column({ nullable: true })
+	@Column()
 	Phone?: string | null;
 
 	@Column({ nullable: true })

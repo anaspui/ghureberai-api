@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { staffController } from './staff.controller';
-import { staffService } from './staff.service';
-import { staff } from 'src/Shared/entities/staff.entity';
+import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { staffController } from "./staff.controller";
+import { staffService } from "./staff.service";
+import { staff } from "../../Shared/entities/staff.entity";
 import { MailerModule } from "@nestjs-modules/mailer";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([staff]),
-    MailerModule.forRoot({
+	imports: [
+		TypeOrmModule.forFeature([staff]),
+		MailerModule.forRoot({
 			transport: {
 				host: "smtp.gmail.com",
 				port: 465,
@@ -19,8 +20,8 @@ import { MailerModule } from "@nestjs-modules/mailer";
 				},
 			},
 		}),
-  ],
-    controllers: [staffController],
-    providers: [staffService],
-  })
-  export class staffModule {}
+	],
+	controllers: [staffController],
+	providers: [staffService],
+})
+export class staffModule {}

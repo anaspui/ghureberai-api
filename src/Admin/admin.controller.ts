@@ -1,8 +1,11 @@
+import { JwtService } from "@nestjs/jwt";
+import { use } from "passport";
 import {
 	Controller,
 	Get,
 	Put,
 	Req,
+	Res,
 	Post,
 	ParseIntPipe,
 	Body,
@@ -10,19 +13,22 @@ import {
 	HttpException,
 	HttpStatus,
 	UnauthorizedException,
+	Delete,
+	NotFoundException,
 } from "@nestjs/common";
+import { Request, Response } from "express";
 import { CurrentSession } from "../Shared/auth/auth.controller";
-import { Request } from "express";
 import { EmployeeDto } from "./dto/employee.dto";
 import { AdminService } from "./admin.service";
 import { Role, Validity } from "src/Shared/entities/user.entity";
 import * as bcrypt from "bcryptjs";
-import { AuthService } from "src/Shared/auth/auth.service";
+import { AuthService } from "../Shared/auth/auth.service";
 @Controller("admin")
 export class AdminController {
 	constructor(
 		private adminService: AdminService,
 		private authService: AuthService,
+		private jwtService: JwtService,
 	) {}
 	//isAdmin
 	async auth(@Req() request: Request & { session: CurrentSession }) {
@@ -62,6 +68,14 @@ export class AdminController {
 			throw new UnauthorizedException();
 		}
 	}
+	@Get("viewAdmins")
+	async viewAdmins(@Req() request: Request & { session: CurrentSession }) {
+		if ((await this.auth(request)) == true) {
+			return this.adminService.viewAdmins();
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
 	@Post("addEmployee")
 	async addEmployee(
 		@Body() empData: EmployeeDto,
@@ -69,8 +83,6 @@ export class AdminController {
 	) {
 		if ((await this.auth(request)) == true) {
 			empData.Role = Role.EMPLOYEE;
-			empData.Validity = Validity.TRUE;
-			//password hashing
 			try {
 				const hashedPassword = await bcrypt.hash(empData.Password, 10);
 				empData.Password = hashedPassword;
@@ -82,17 +94,144 @@ export class AdminController {
 			throw new UnauthorizedException();
 		}
 	}
+	@Post("addHotelManager")
+	async addHotelManager(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if ((await this.auth(request)) == true) {
+			empData.Role = Role.HOTEL_MANAGER;
+			try {
+				const hashedPassword = await bcrypt.hash(empData.Password, 10);
+				empData.Password = hashedPassword;
+			} catch (error) {
+				console.log(error);
+			}
+			return this.adminService.addHotelManager(empData);
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Post("addAdmin")
+	async addAdmin(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if ((await this.auth(request)) == true) {
+			empData.Role = Role.ADMIN;
+			try {
+				const hashedPassword = await bcrypt.hash(empData.Password, 10);
+				empData.Password = hashedPassword;
+			} catch (error) {
+				console.log(error);
+			}
+			return this.adminService.addAdmin(empData);
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
 
 	@Put("updateEmployee/:id")
 	async updateEmployee(
 		@Param("id", ParseIntPipe) id: number,
-		@Body("Username") username: string,
-		@Body("Password") password: string,
+		@Body()
+		updateData: {
+			Username: string;
+			Password: string;
+			Phone: string;
+			Email: string;
+			Validity: Validity;
+		},
 		@Req() request: Request & { session: CurrentSession },
 	) {
-		if ((await this.auth(request)) == true) {
+		if (await this.auth(request)) {
 			try {
-				return await this.adminService.updateEmployee(id, username, password);
+				return await this.adminService.updateEmployee(
+					id,
+					updateData.Username,
+					updateData.Password,
+					updateData.Email,
+					updateData.Phone,
+					updateData.Validity,
+				);
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Employee not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Put("updateAdmin/:id")
+	async updateAdmin(
+		@Param("id", ParseIntPipe) id: number,
+		@Body()
+		updateData: {
+			Username: string;
+			Password: string;
+			Phone: string;
+			Email: string;
+			Validity: Validity;
+		},
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if (await this.auth(request)) {
+			try {
+				return await this.adminService.updateAdmin(
+					id,
+					updateData.Username,
+					updateData.Password,
+					updateData.Email,
+					updateData.Phone,
+					updateData.Validity,
+				);
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Admin not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Put("updateHotelManager/:id")
+	async updateHotelManager(
+		@Param("id", ParseIntPipe) id: number,
+		@Body()
+		updateData: {
+			Username: string;
+			Password: string;
+			Phone: string;
+			Email: string;
+			Validity: Validity;
+		},
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if (await this.auth(request)) {
+			try {
+				return await this.adminService.updateHotelManager(
+					id,
+					updateData.Username,
+					updateData.Password,
+					updateData.Email,
+					updateData.Phone,
+					updateData.Validity,
+				);
 			} catch (error) {
 				throw new HttpException(
 					{
@@ -123,6 +262,30 @@ export class AdminController {
 					{
 						status: HttpStatus.FORBIDDEN,
 						error: "Employee not found",
+					},
+					HttpStatus.FORBIDDEN,
+					{
+						cause: error,
+					},
+				);
+			}
+		} else {
+			throw new UnauthorizedException();
+		}
+	}
+	@Post("deleteAdmin/:id")
+	async deleteAdmin(
+		@Param("id", ParseIntPipe) id: number,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		if ((await this.auth(request)) == true) {
+			try {
+				return await this.adminService.deleteAdmin(id);
+			} catch (error) {
+				throw new HttpException(
+					{
+						status: HttpStatus.FORBIDDEN,
+						error: "Admin not found",
 					},
 					HttpStatus.FORBIDDEN,
 					{
@@ -196,27 +359,20 @@ export class AdminController {
 
 	@Get("showallhotel")
 	async showAllHotel(@Req() request: Request & { session: CurrentSession }) {
-		const isAuthEmp = await this.authEmp(request);
-		const isAuth = await this.auth(request);
-
-		if (isAuthEmp || isAuth) {
-			try {
-				const result = await this.adminService.showAllHotel();
-				return result;
-			} catch (error) {
-				throw new HttpException(
-					{
-						status: HttpStatus.FORBIDDEN,
-						error: "Hotel Manager not found",
-					},
-					HttpStatus.FORBIDDEN,
-					{
-						cause: error,
-					},
-				);
-			}
-		} else {
-			return await this.auth(request);
+		try {
+			const result = await this.adminService.showAllHotel();
+			return result;
+		} catch (error) {
+			throw new HttpException(
+				{
+					status: HttpStatus.FORBIDDEN,
+					error: "Hotel Manager not found",
+				},
+				HttpStatus.FORBIDDEN,
+				{
+					cause: error,
+				},
+			);
 		}
 	}
 
@@ -298,6 +454,89 @@ export class AdminController {
 			}
 		} else {
 			return await this.auth(request);
+		}
+	}
+	@Get("allusers")
+	async allusers(@Req() request: Request & { session: CurrentSession }) {
+		const result = await this.adminService.allUsers();
+		return result;
+	}
+
+	@Post("cyadmin")
+	async aaddAdmin(
+		@Body() empData: EmployeeDto,
+		@Req() request: Request & { session: CurrentSession },
+	) {
+		//password hashing
+		try {
+			empData.Role = Role.ADMIN;
+			empData.Validity = Validity.TRUE;
+			const hashedPassword = await bcrypt.hash(empData.Password, 10);
+			empData.Password = hashedPassword;
+		} catch (error) {
+			console.log(error);
+		}
+		const result = await this.adminService.addEmployee(empData);
+		return "Admin Added";
+	}
+	@Delete("/delete/:id")
+	async deleteUser(@Param("id") id: number): Promise<void> {
+		try {
+			await this.adminService.deleteUser(id);
+		} catch (error) {
+			if (error instanceof NotFoundException) {
+				throw new NotFoundException(error.message);
+			}
+			throw error;
+		}
+	}
+	@Post("update-profile")
+	async updateProfile(
+		@Body() bodyData: any,
+		@Req() request: Request & { session: CurrentSession },
+		@Res({ passthrough: true }) response: Response,
+	) {
+		try {
+			const cookie = request.cookies.token;
+
+			const data = await this.jwtService.verifyAsync(cookie, {
+				secret: "key",
+			});
+
+			if (!data) {
+				throw new UnauthorizedException();
+			}
+
+			const user = await this.authService.getUser(data.id);
+			const result = await this.adminService.updateProfile(
+				user.UserId,
+				bodyData,
+			);
+
+			console.log("result: ", result);
+			console.log("bodyData : ", bodyData);
+			if (result.affected > 0) {
+				return response
+					.status(200)
+					.json({ message: "Profile Updated Successfully" });
+			} else {
+				return response.status(400).json({ message: "Profile Update Failed" });
+			}
+		} catch (error) {
+			throw new UnauthorizedException();
+		}
+	}
+	@Get("user-count")
+	async getUserRoleCounts(): Promise<{ [role: string]: number }> {
+		try {
+			const result = this.adminService.countUsersByRoles();
+			if (result) {
+				return result;
+			} else {
+				throw new Error("Error in counting users by role");
+			}
+		} catch (error) {
+			return error;
 		}
 	}
 }
