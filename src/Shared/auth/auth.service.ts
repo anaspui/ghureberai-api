@@ -37,19 +37,6 @@ export class AuthService {
 		}
 	}
 
-	// async signIn(username, password) {
-	// 	const user = this.auth(username);
-	// 	if (!this.decryptPassword(password, (await user).Password)) {
-	// 		throw new UnauthorizedException();
-	// 	}
-	// 	const payload = {
-	// 		sub: (await user).UserId,
-	// 		username: (await user).Username,
-	// 	};
-	// 	return {
-	// 		access_token: await this.jwtService.signAsync(payload),
-	// 	};
-	// }
 	async getUser(UserId: number) {
 		try {
 			return this.userRepo.findOne({ where: { UserId } });

@@ -28,8 +28,6 @@ export class RegistrationController {
 		} else {
 			regData.Role = Role.CUSTOMER;
 		}
-		// console.log(regData);
-		// console.log(domain);
 		if (isUnique === true) {
 			//password hashing
 			try {

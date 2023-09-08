@@ -8,7 +8,6 @@ import {
 	Injectable,
 	Body,
 	UnauthorizedException,
-	NotFoundException,
 	Put,
 } from "@nestjs/common";
 import { Request, Response } from "express";
@@ -16,7 +15,6 @@ import { Session } from "express-session";
 import { AuthService } from "./auth.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
-// import { CurrentSession, sessionConfig } from "./session.config";
 export interface CurrentSession extends Session {
 	users?: User[];
 	user?: User;
@@ -152,7 +150,7 @@ export class AuthController {
 	// }
 	//Updated for auth
 
-	@Post("auth-check")
+	@Post("auth/auth-check")
 	async checkAuthenticationByToken(
 		@Req() request: Request & { session: CurrentSession },
 		@Res({ passthrough: true }) response: Response,
@@ -184,15 +182,13 @@ export class AuthController {
 		}
 	}
 
-	@Get("sessiondump")
+	@Get("auth/sessiondump")
 	dump(@Req() request: Request & { session: CurrentSession }) {
 		return request.session;
 	}
 
 	@Get("user")
 	async user(@Req() request: Request, @Res() res: Response) {
-		// console.log("Request cookies:");
-		// console.log(request.cookies.token);
 		try {
 			const cookie = request.cookies.token;
 

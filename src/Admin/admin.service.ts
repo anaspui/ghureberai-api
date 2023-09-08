@@ -2,15 +2,13 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { EmployeeDto } from "./dto/employee.dto";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Gender, User, Validity } from "../Shared/entities/user.entity";
+import { User, Validity } from "../Shared/entities/user.entity";
 import { Role } from "../Shared/entities/user.entity";
-import { Package, PackageType } from "./../Shared/entities/package.entity";
+import { Package } from "./../Shared/entities/package.entity";
 import * as bcrypt from "bcryptjs";
 import { Hotel } from "src/Shared/entities/hotel.entity";
-import { Localtransport } from "src/Shared/entities/localtransport.entity";
 import { Booking } from "src/Shared/entities/booking.entity";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
-import { response } from "express";
 @Injectable()
 export class AdminService {
 	constructor(
@@ -20,8 +18,6 @@ export class AdminService {
 		private PackageRepo: Repository<Package>,
 		@InjectRepository(Hotel)
 		private HotelRepo: Repository<Hotel>,
-		@InjectRepository(Hotel)
-		private TransportManagerRepo: Repository<Localtransport>,
 		@InjectRepository(Hotel)
 		private Booking: Repository<Booking>,
 	) {}
