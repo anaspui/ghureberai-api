@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Driver } from "../../Shared/entities/transportDriver.entity";
+import { Driver } from "src/Shared/entities/driver.entity";
 import { TransportDriverController } from "./transportDriver.controller";
 import { TransportDriverService } from "./transportDriver.service";
 import { MailerModule } from "@nestjs-modules/mailer";
