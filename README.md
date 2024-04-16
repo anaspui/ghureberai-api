@@ -35,6 +35,123 @@ GhureBerai is built using cutting-edge technologies to ensure a seamless user ex
 -   class-transformer
 -   TJS Cookies
 
+
+Endpoints
+------------
+<details>
+  <summary>API Endpoints</summary>
+
+  1. **Add Admin**
+     - Method: POST
+     - URL: `http://localhost:3000/admin/addadmin`
+     - Request Body:
+       ```json
+       {
+           "Username": "",
+           "Password": "",
+           "Email": ""
+       }
+       ```
+
+  2. **Registration**
+     - Method: POST
+     - URL: `http://localhost:3000/registration`
+     - Request Body:
+       ```json
+       {
+           "Username": "",
+           "Password": "",
+           "FirstName": "",
+           "LastName": "",
+           "Dob": "",
+           "Email": "",
+           "Phone": "",
+           "Address": "",
+           "Picture": "",
+           "Gender": ""
+       }
+       ```
+
+  3. **Login**
+     - Method: POST
+     - URL: `http://localhost:3000/auth/login`
+     - Request Body:
+       ```json
+       {
+           "Username": "",
+           "Password": ""
+       }
+       ```
+
+  4. **Logout**
+     - Method: POST
+     - URL: `http://localhost:3000/auth/logout`
+
+  5. **View Users**
+     - Method: GET
+     - URL: `http://localhost:3000/admin/allusers`
+
+  6. **Add Employee**
+     - Method: POST
+     - URL: `http://localhost:3000/admin/addEmployee`
+     - Request Body:
+       ```json
+       {
+           "Username": "",
+           "Password": "",
+           "Email": ""
+       }
+       ```
+
+  7. **View All Employees**
+     - Method: GET
+     - URL: `http://localhost:3000/admin/viewEmployees`
+
+  8. **Update Employee**
+     - Method: PUT
+     - URL: `http://localhost:3000/admin/updateEmployee/466`
+     - Request Body:
+       ```json
+       {
+           "Username": "",
+           "Password": ""
+       }
+       ```
+
+  9. **Delete Employee**
+     - Method: POST
+     - URL: `http://localhost:3000/admin/deleteEmployee/56`
+
+  10. **Session Dump**
+      - Method: GET
+      - URL: `http://localhost:3000/sessiondump`
+
+  11. **Approve Hotel Manager**
+      - Method: PUT
+      - URL: `http://localhost:3000/admin/approveHotelManager/45`
+
+  12. **User**
+      - Method: GET
+      - URL: `http://localhost:3000/user`
+
+  13. **Show All Packages**
+      - Method: GET
+      - URL: `http://localhost:3000/admin/showallpackages`
+
+  14. **Show All Transport**
+      - Method: GET
+      - URL: `http://localhost:3000/admin/showalltpmanager`
+
+  15. **Show All Hotel**
+      - Method: GET
+      - URL: `http://localhost:3000/admin/showallhotel`
+
+  16. **Show All Hotel Manager**
+      - Method: GET
+      - URL: `http://localhost:3000/admin/showallhotelmanager`
+
+</details>
+
 Installation
 ------------
 
