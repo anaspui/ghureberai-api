@@ -1,0 +1,448 @@
+{
+	"info": {
+		"_postman_id": "fa470b50-8490-4745-8372-c30bbcad0bec",
+		"name": "ghureberai",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "27833358-fa470b50-8490-4745-8372-c30bbcad0bec"
+	},
+	"item": [
+		{
+			"name": "Add Admin",
+			"id": "702defce-a7ae-4e26-87ae-a9a4bd6e3126",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\": \"Jake\",\r\n    \"Password\": \"Jake\",\r\n    \"Email\": \"Jake@gmail.com\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/admin/addadmin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"addadmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration",
+			"id": "c98fb913-b79f-43ff-805f-68cc953dfbfb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"Username\": \"masud\",\r\n\t\"Password\": \"1234\",\r\n\t\"FirstName\": \"Mostafa\",\r\n\t\"LastName\": \"Masud\",\r\n\t\"Dob\": \"1990-01-01\",\r\n\t\"Email\": \"anaspui767@gmail.com\",\r\n\t\"Phone\": \"1234567890\",\r\n\t\"Address\": \"123 Main St\",\r\n\t\"Picture\": \"profile_picture.jpg\",\r\n    \"Gender\": \"male\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/registration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"registration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"id": "d7df3fe8-bd02-426b-937a-19cd7adb1f5c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"Username\": \"\",\r\n  \"Password\": \"\"\r\n}\r\n  ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"id": "3e23f270-9c3e-4e38-9ec5-f079e48aea3f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/auth/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Users",
+			"id": "366decea-0b58-47cc-8368-5c25aef9463e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/allusers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"allusers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Employee",
+			"id": "964ab7ff-137f-447e-b45b-83af06bfe253",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\": \"Jake\",\r\n    \"Password\": \"Jake\",\r\n    \"Email\": \"Jake@gmail.com\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/admin/addEmployee",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"addEmployee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View All Employees",
+			"id": "5b6f57b8-6739-4226-b89c-f489d7948ddb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/viewEmployees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"viewEmployees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Employee",
+			"id": "2f2105b9-ba8d-40b5-ba5a-b9e6d3e2f430",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Username\": \"\",\r\n    \"Password\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/admin/updateEmployee/466",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"updateEmployee",
+						"466"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee ",
+			"id": "a09324a4-5cd7-4d44-beb7-a4309e1e849e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/deleteEmployee/56",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"deleteEmployee",
+						"56"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session Dump",
+			"id": "773c4991-27e7-46c9-b307-f0d072a7c36d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/sessiondump",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sessiondump"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Approve Hotel Manager",
+			"id": "0e8ea9b0-0847-4372-aa63-320b4582f6d0",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/approveHotelManager/45",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"approveHotelManager",
+						"45"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"id": "f0639729-900c-47bd-bb36-22717ca39c67",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Packages",
+			"id": "8ca61bb2-907c-4e2a-bf3d-455252087418",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/showallpackages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"showallpackages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Transport",
+			"id": "18279e72-10a7-43af-b589-71952b31186a",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/showalltpmanager",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"showalltpmanager"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Hotel",
+			"id": "6256568d-2e47-40d0-9127-3ddfc98e7815",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/showallhotel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"showallhotel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Hotel Manager",
+			"id": "1c60f098-c39e-496a-85fa-e31c3a56df2f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/admin/showallhotelmanager",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"admin",
+						"showallhotelmanager"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

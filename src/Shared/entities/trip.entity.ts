@@ -31,10 +31,13 @@ export class Trip {
 	@Column()
 	LocTo: string;
 
+	@Column()
+	DriverID: number;
+
 	@OneToOne(() => User, user => user.UserId)
 	@Column({ nullable: true })
 	@JoinColumn()
-	LocalTransportID?: string | null;
+	TransportID?: string | null;
 
 	@OneToOne(() => Package, pac => pac.PackageId)
 	@JoinColumn()

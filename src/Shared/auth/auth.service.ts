@@ -12,35 +12,37 @@ export class AuthService {
 		private jwtService: JwtService,
 	) {}
 
-	async auth(Username: string) {
-		const user = await this.userRepo.findOne({ where: { Username } });
-		if (user) {
-			return user;
+	async auth(Username: string): Promise<User | null> {
+		try {
+			const user = await this.userRepo.findOne({ where: { Username } });
+			return user || null;
+		} catch (error) {
+			throw new Error("Error fetching user: " + error.message);
 		}
 	}
 
 	async decryptPassword(password: string, hashed: string): Promise<boolean> {
 		try {
-			return await bcrypt.compare(password, hashed);
+			if (!password || !hashed) {
+				throw new Error("Invalid password or hashed password");
+			}
+
+			// console.log("Entered password:", password);
+			// console.log("Hashed password:", hashed);
+
+			const isPasswordMatch = await bcrypt.compare(password, hashed);
+			return isPasswordMatch;
 		} catch (error) {
 			throw new Error("Error comparing passwords: " + error.message);
 		}
 	}
-	// async signIn(username, password) {
-	// 	const user = this.auth(username);
-	// 	if (!this.decryptPassword(password, (await user).Password)) {
-	// 		throw new UnauthorizedException();
-	// 	}
-	// 	const payload = {
-	// 		sub: (await user).UserId,
-	// 		username: (await user).Username,
-	// 	};
-	// 	return {
-	// 		access_token: await this.jwtService.signAsync(payload),
-	// 	};
-	// }
+
 	async getUser(UserId: number) {
-		return this.userRepo.findOne({ where: { UserId } });
+		try {
+			return this.userRepo.findOne({ where: { UserId } });
+		} catch (error) {
+			throw new Error("Error fetching user: " + error.message);
+		}
 	}
 
 	async getRole(request) {
@@ -61,6 +63,15 @@ export class AuthService {
 			return result.Role;
 		} catch (error) {
 			throw new UnauthorizedException();
+		}
+	}
+	async updatePassword(UserId: number, Password: string) {
+		try {
+			const hashedPassword = await bcrypt.hash(Password, 10);
+			await this.userRepo.update({ UserId }, { Password: hashedPassword });
+			return true;
+		} catch (error) {
+			throw new Error("Error updating password: " + error.message);
 		}
 	}
 }
